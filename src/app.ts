@@ -7,6 +7,8 @@ import createError, { HttpError } from 'http-errors';
 dotenv.config();
 require('./config/mongoose'); // 수정
 
+import authRouter from './routes/auth';
+
 const app = express();
 
 app.use(cors());
@@ -14,7 +16,7 @@ app.use(logger('dev'));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 
-// app.use('/auth', authRouter);
+app.use('/auth', authRouter);
 app.use('/', (req, res) => res.status(200).json({ result: 'ok' }));
 
 app.use((req, res, next) => {
