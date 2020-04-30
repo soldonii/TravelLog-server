@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 ;
 exports.login = async (req, res) => {
-    const { user: { nickname, profile_image } } = res.locals;
+    const { user: { _id, nickname, profile_image } } = res.locals;
     try {
         const payload = { nickname };
         jsonwebtoken_1.default.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: 1000 * 60 * 60 }, (err, token) => {
@@ -16,7 +16,7 @@ exports.login = async (req, res) => {
                     errorMessage: 'Server error. Please try again.'
                 });
             }
-            res.status(200).json({ token, nickname, profile_image });
+            res.status(200).json({ userId: _id, token, nickname, profile_image });
         });
     }
     catch (err) {

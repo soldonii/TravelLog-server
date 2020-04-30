@@ -8,9 +8,7 @@ const User_1 = __importDefault(require("../models/User"));
 const findUserInDB = async (req, res, next) => {
     const { id: kakaoId, properties: { nickname, email, profile_image } } = req.body;
     const user = await User_1.default.findOne({ kakaoId });
-    console.log(req.body);
     if (!user) {
-        console.log('no user');
         const newUser = await User_1.default.create({
             kakaoId,
             nickname,
@@ -21,7 +19,6 @@ const findUserInDB = async (req, res, next) => {
         res.locals.user = newUser;
     }
     else {
-        console.log('user', user);
         res.locals.user = user;
     }
     next();

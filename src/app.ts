@@ -8,6 +8,7 @@ dotenv.config();
 require('./config/mongoose'); // 수정
 
 import authRouter from './routes/auth';
+import travelRouter from './routes/travel';
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 
 app.use('/auth', authRouter);
+app.use('/travel', travelRouter);
 app.use('/', (req, res) => res.status(200).json({ result: 'ok' }));
 
 app.use((req, res, next) => {

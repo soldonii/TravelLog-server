@@ -1,13 +1,15 @@
 import { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
+import { Types } from 'mongoose';
 
 interface User {
+  _id: Types.ObjectId,
   nickname: string,
   profile_image: string
 };
 
 export const login: RequestHandler = async (req, res) => {
-  const { user: { nickname, profile_image } }: { user: User } = res.locals;
+  const { user: { _id, nickname, profile_image } }: { user: User } = res.locals;
 
   try {
     const payload = { nickname };
@@ -24,7 +26,7 @@ export const login: RequestHandler = async (req, res) => {
           });
         }
 
-        res.status(200).json({ token, nickname, profile_image });
+        res.status(200).json({ userId: _id, token, nickname, profile_image });
       }
     );
   } catch (err) {

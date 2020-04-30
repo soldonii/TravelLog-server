@@ -18,10 +18,8 @@ const findUserInDB: RequestHandler = async (req, res, next) => {
 
   const { id: kakaoId, properties: { nickname, email, profile_image } }: RequestBody = req.body;
   const user = await User.findOne({ kakaoId });
-  console.log(req.body);
 
   if (!user) {
-    console.log('no user');
     const newUser = await User.create({
       kakaoId,
       nickname,
@@ -32,7 +30,6 @@ const findUserInDB: RequestHandler = async (req, res, next) => {
 
     res.locals.user = newUser;
   } else {
-    console.log('user', user);
     res.locals.user = user;
   }
 
