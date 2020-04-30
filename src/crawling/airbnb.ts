@@ -22,44 +22,104 @@ const getAirbnbCrawlingData = (city: string, travelDates: Array<string>) => {
 
     await page.goto(airbnbUrl, { waitUntil: 'networkidle0'});
 
-    const typeList = await page.$$eval(
-      AIRBNB_SELECTORS.TYPE,
-      types => types.map(type => type.textContent!)
-    );
+    const airbnbData: any[] = [];
+    const resultDivs = await page.$$(AIRBNB_SELECTORS.RESULT_DIV);
 
-    const titleList = await page.$$eval(
-      AIRBNB_SELECTORS.TITLE,
-      titles => titles.map(title => title.textContent!)
-    );
+    for (const div of resultDivs) {
 
-    const infoList = await page.$$eval(
-      AIRBNB_SELECTORS.INFO,
-      infos => infos.map(info => info.textContent!)
-    );
+      const descFlag1 = await div.$(AIRBNB_SELECTORS.DESCRIPTION1);
+      let description;
 
-    const priceList = await page.$$eval(
-      AIRBNB_SELECTORS.PRICE,
-      prices => prices.filter(price => price.textContent !== '최저').map(price => price.textContent!)
-    );
+      if (descFlag1) {
+        description = await div.$eval(
+          AIRBNB_SELECTORS.DESCRIPTION1,
+          description => description.textContent?.replace(/\n/g, '').trim()!
+        );
+      } else {
+        const descFlag2 = await div.$(AIRBNB_SELECTORS.DESCRIPTION2);
 
-    const imageList = await page.$$eval(
-      AIRBNB_SELECTORS.IMAGE,
-      images => images.map(image => image.getAttribute('style')!)
-    );
+        if (descFlag2) {
+          description = await div.$eval(
+            AIRBNB_SELECTORS.DESCRIPTION2,
+            description => description.textContent?.replace(/\n/g, '').trim()!
+          );
+        } else {
+          description = await div.$eval(
+            AIRBNB_SELECTORS.DESCRIPTION3,
+            description => description.textContent?.replace(/\n/g, '').trim()!
+          );
+        }
+      }
 
-    const linkList = await page.$$eval(
-      AIRBNB_SELECTORS.LINK,
-      links => links.map(link => link.getAttribute('href')!)
-    );
+      const titleFlag = await div.$(AIRBNB_SELECTORS.TITLE1);
+      let title;
 
-    return {
-      typeList,
-      titleList,
-      infoList,
-      priceList,
-      imageList,
-      linkList
-    };
+      if (titleFlag) {
+        title = await div.$eval(
+          AIRBNB_SELECTORS.TITLE1,
+          title => title.textContent?.replace(/\n/g, '').trim()!
+        );
+      } else {
+        title = await div.$eval(
+          AIRBNB_SELECTORS.TITLE2,
+          title => title.textContent?.replace(/\n/g, '').trim()!
+        );
+      }
+
+      const infoFlag = await div.$(AIRBNB_SELECTORS.INFO1);
+      let infoList;
+
+      if (infoFlag) {
+        infoList = await div.$$eval(
+          AIRBNB_SELECTORS.INFO1,
+          infos => infos.map(info => info.textContent?.replace(/\n/g, '').trim()!)
+        );
+      } else {
+        infoList = await div.$$eval(
+          AIRBNB_SELECTORS.INFO2,
+          infos => infos.map(info => info.textContent?.replace(/\n/g, '').trim()!)
+        );
+      }
+
+      const price = await div.$$eval(
+        AIRBNB_SELECTORS.PRICE,
+        prices => prices.filter(price => price.textContent !== '최저')
+          .map(price => price.textContent?.replace(/\n/g, '').trim()!)[0]
+      );
+
+      const imageFlag = await div.$(AIRBNB_SELECTORS.IMAGE1);
+      let image;
+
+      if (imageFlag) {
+        image = await div.$eval(
+          AIRBNB_SELECTORS.IMAGE1,
+          image => image.getAttribute('style')?.match(/\bhttps?:\/\/\S+/gi)![0]
+        );
+      } else {
+        image = await div.$eval(
+          AIRBNB_SELECTORS.IMAGE2,
+          image => image.getAttribute('style')?.match(/\bhttps?:\/\/\S+/gi)![0]
+        );
+      }
+
+      const link = await div.$eval(
+        AIRBNB_SELECTORS.LINK,
+        link => 'https://airbnb.co.kr' + link.getAttribute('href')!
+      );
+
+      const result = {
+        description,
+        title,
+        infoList,
+        price,
+        image,
+        link
+      };
+
+      airbnbData.push(result);
+    }
+
+    return airbnbData;
   })();
 };
 

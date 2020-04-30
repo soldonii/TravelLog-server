@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.KAYAK_SELECTORS = {
-    CLOSE_MODAL: '#eXWX-dialog-close',
+    RESULT_DIV: '.resultWrapper',
     AIRLINE_IMAGE: '.stacked-carriers',
     DEPARTURE_TIME: '.depart-time',
     ARRIVAL_TIME: '.arrival-time',
@@ -14,11 +14,16 @@ exports.KAYAK_SELECTORS = {
     LINK: '.booking-link'
 };
 exports.AIRBNB_SELECTORS = {
-    TYPE: '._167qordg',
-    TITLE: '._1c2n35az',
-    INFO: '._kqh46o',
+    RESULT_DIV: '._gig1e7',
+    DESCRIPTION1: '._167qordg',
+    DESCRIPTION2: '._190542tw',
+    DESCRIPTION3: '._13qbppeg',
+    TITLE1: '._1c2n35az',
+    TITLE2: '._1jbo9b6h',
+    INFO1: '._kqh46o',
+    INFO2: '._1ulsev2',
     PRICE: '._1p7iugi',
-    IMAGE: '._6ikqekk',
+    IMAGE1: '._6ikqekk',
+    IMAGE2: '._1i2fr3fi',
     LINK: '._i24ijs'
 };
-// title:  '._1jbo9b6h'

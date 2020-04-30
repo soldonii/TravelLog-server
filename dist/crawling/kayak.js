@@ -21,68 +21,50 @@ const getCityCode = (countryName, cityName) => {
 const getKayakSearchUrl = (country, city, travelDates) => {
     const cityCode = getCityCode(country, city);
     const departureDate = travelDates[0].slice(0, 10);
-    const arrivalDate = travelDates[0].slice(0, 10);
+    const arrivalDate = travelDates[1].slice(0, 10);
     return KAYAK_URI_FRONT + cityCode + '/' + departureDate + '/' + arrivalDate;
 };
-// interface KayakData {
-//   airlineImageList: any[],
-//   departureTimeList: string[],
-//   arrivalTimeList: string[],
-//   airlinesList: string[],
-//   layoverTimeList: string[],
-//   layoverAirportList: string[],
-//   flightHoursList: string[],
-//   airportsList: string[],
-//   priceList: string[],
-//   linkList: string[]
-// };
 const getKayakCrawlingData = (country, city, travelDates) => {
     const kayakUrl = getKayakSearchUrl(country, city, travelDates);
     return (async () => {
         const browser = await puppeteer_1.default.launch({ headless: false, defaultViewport: null, slowMo: 10 });
         const page = await browser.newPage();
         await page.goto(kayakUrl, { waitUntil: 'networkidle0' });
-        const airlineImageList = await page.$$eval(selectors_1.KAYAK_SELECTORS.AIRLINE_IMAGE, divs => divs.map(div => {
-            const imageList = [];
-            const airlines = div.children;
-            for (const airline of airlines) {
-                imageList.push(airline.children[0].getAttribute('src'));
-            }
-            return imageList;
-        }));
-        const departureTimeList = await page.$$eval(selectors_1.KAYAK_SELECTORS.DEPARTURE_TIME, times => times.map(time => time.textContent));
-        const arrivalTimeList = await page.$$eval(selectors_1.KAYAK_SELECTORS.ARRIVAL_TIME, times => times.map(time => time.textContent));
-        const airlinesList = await page.$$eval(selectors_1.KAYAK_SELECTORS.AIRLINES, airlines => airlines.map(airline => airline.textContent)); // \n 없애기
-        const layoverTimeList = await page.$$eval(selectors_1.KAYAK_SELECTORS.LAYOVER_TIME, times => times.map(time => time.textContent)); // \n 없애기
-        const layoverAirportList = await page.$$eval(selectors_1.KAYAK_SELECTORS.LAYOVER_AIRPORT, airports => airports.map(airport => airport.textContent));
-        const flightHoursList = await page.$$eval(selectors_1.KAYAK_SELECTORS.FLIGHT_HOURS, hours => hours.map(hour => hour.textContent)); // \n 없애기
-        const airportsList = await page.$$eval(selectors_1.KAYAK_SELECTORS.AIRPORTS, airports => airports.map(airport => airport.textContent));
-        const priceList = await page.$$eval(selectors_1.KAYAK_SELECTORS.PRICE, prices => prices.map(price => price.textContent));
-        const linkList = await page.$$eval(selectors_1.KAYAK_SELECTORS.LINK, links => links.map(link => link.getAttribute('href'))); // link가 나오지 않음.
-        console.log({
-            airlineImageList,
-            departureTimeList,
-            arrivalTimeList,
-            airlinesList,
-            layoverTimeList,
-            layoverAirportList,
-            flightHoursList,
-            airportsList,
-            priceList,
-            linkList
-        });
-        return {
-            airlineImageList,
-            departureTimeList,
-            arrivalTimeList,
-            airlinesList,
-            layoverTimeList,
-            layoverAirportList,
-            flightHoursList,
-            airportsList,
-            priceList,
-            linkList
-        };
+        const kayakData = [];
+        const resultDivs = await page.$$(selectors_1.KAYAK_SELECTORS.RESULT_DIV);
+        for await (const div of resultDivs) {
+            const airlineImageList = await div.$$eval(selectors_1.KAYAK_SELECTORS.AIRLINE_IMAGE, divs => divs.map(div => {
+                const imageList = [];
+                const airlines = div.children;
+                for (const airline of airlines) {
+                    imageList.push(airline.children[0].getAttribute('src'));
+                }
+                return imageList;
+            }));
+            const departureTimeList = await div.$$eval(selectors_1.KAYAK_SELECTORS.DEPARTURE_TIME, times => times.map(time => { var _a; return (_a = time.textContent) === null || _a === void 0 ? void 0 : _a.replace(/\n/g, '').trim(); }));
+            const arrivalTimeList = await div.$$eval(selectors_1.KAYAK_SELECTORS.ARRIVAL_TIME, times => times.map(time => { var _a; return (_a = time.textContent) === null || _a === void 0 ? void 0 : _a.replace(/\n/g, '').trim(); }));
+            const airlinesList = await div.$$eval(selectors_1.KAYAK_SELECTORS.AIRLINES, airlines => airlines.map(airline => { var _a; return (_a = airline.textContent) === null || _a === void 0 ? void 0 : _a.replace(/\n/g, '').trim(); }));
+            const layoverTimeList = await div.$$eval(selectors_1.KAYAK_SELECTORS.LAYOVER_TIME, times => times.map(time => { var _a; return (_a = time.textContent) === null || _a === void 0 ? void 0 : _a.replace(/\n/g, '').trim(); }));
+            const layoverAirportList = await div.$$eval(selectors_1.KAYAK_SELECTORS.LAYOVER_AIRPORT, airports => airports.map(airport => { var _a; return (_a = airport.textContent) === null || _a === void 0 ? void 0 : _a.replace(/\n/g, '').trim(); }));
+            const flightHoursList = await div.$$eval(selectors_1.KAYAK_SELECTORS.FLIGHT_HOURS, hours => hours.map(hour => { var _a; return (_a = hour.textContent) === null || _a === void 0 ? void 0 : _a.replace(/\n/g, '').trim(); }));
+            const airportsList = await div.$$eval(selectors_1.KAYAK_SELECTORS.AIRPORTS, airports => airports.map(airport => airport.textContent).filter(airport => !airport.includes('\n')));
+            const priceList = await div.$$eval(selectors_1.KAYAK_SELECTORS.PRICE, prices => prices.map(price => { var _a; return (_a = price.textContent) === null || _a === void 0 ? void 0 : _a.replace(/\n/g, '').trim(); }));
+            const linkList = await div.$$eval(selectors_1.KAYAK_SELECTORS.LINK, links => links.map(link => 'https://kayak.co.kr' + link.getAttribute('href')));
+            const result = {
+                airlineImageList,
+                departureTimeList,
+                arrivalTimeList,
+                airlinesList,
+                layoverTimeList,
+                layoverAirportList,
+                flightHoursList,
+                airportsList,
+                priceList,
+                linkList
+            };
+            kayakData.push(result);
+        }
+        return kayakData;
     })();
 };
 exports.default = getKayakCrawlingData;
