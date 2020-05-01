@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const puppeteer_1 = __importDefault(require("puppeteer"));
 const selectors_1 = require("./selectors");
 const countryList_json_1 = __importDefault(require("../crawling/countryList.json"));
-const KAYAK_URI_FRONT = 'https://www.kayak.co.kr/flights/ICN-';
+const KAYAK_URI_FRONT = 'https://kayak.co.kr/flights/ICN-';
 const getCityCode = (countryName, cityName) => {
     for (const country of countryList_json_1.default) {
         if (country.Name === countryName) {
@@ -27,7 +27,12 @@ const getKayakSearchUrl = (country, city, travelDates) => {
 const getKayakCrawlingData = (country, city, travelDates) => {
     const kayakUrl = getKayakSearchUrl(country, city, travelDates);
     return (async () => {
-        const browser = await puppeteer_1.default.launch({ headless: false, defaultViewport: null, slowMo: 10 });
+        const browser = await puppeteer_1.default.launch({
+            headless: false,
+            defaultViewport: null,
+            slowMo: 10,
+            args: ['--window-size=1,1', '--window-position=3000,1000']
+        });
         const page = await browser.newPage();
         await page.goto(kayakUrl, { waitUntil: 'networkidle0' });
         const kayakData = [];
@@ -48,8 +53,22 @@ const getKayakCrawlingData = (country, city, travelDates) => {
             const layoverAirportList = await div.$$eval(selectors_1.KAYAK_SELECTORS.LAYOVER_AIRPORT, airports => airports.map(airport => { var _a; return (_a = airport.textContent) === null || _a === void 0 ? void 0 : _a.replace(/\n/g, '').trim(); }));
             const flightHoursList = await div.$$eval(selectors_1.KAYAK_SELECTORS.FLIGHT_HOURS, hours => hours.map(hour => { var _a; return (_a = hour.textContent) === null || _a === void 0 ? void 0 : _a.replace(/\n/g, '').trim(); }));
             const airportsList = await div.$$eval(selectors_1.KAYAK_SELECTORS.AIRPORTS, airports => airports.map(airport => airport.textContent).filter(airport => !airport.includes('\n')));
-            const priceList = await div.$$eval(selectors_1.KAYAK_SELECTORS.PRICE, prices => prices.map(price => { var _a; return (_a = price.textContent) === null || _a === void 0 ? void 0 : _a.replace(/\n/g, '').trim(); }));
-            const linkList = await div.$$eval(selectors_1.KAYAK_SELECTORS.LINK, links => links.map(link => 'https://kayak.co.kr' + link.getAttribute('href')));
+            const priceAndProviderWithLinks = await div.$$eval(selectors_1.KAYAK_SELECTORS.LINK, links => links.map(link => {
+                var _a, _b;
+                const flag = link.children[1];
+                if (flag) {
+                    const linkVal = link.getAttribute('href');
+                    if (!linkVal.includes('javascript')) {
+                        const linkStr = 'https://kayak.co.kr' + link.getAttribute('href');
+                        const price = (_a = link.children[0].children[0].textContent) === null || _a === void 0 ? void 0 : _a.replace(/\n/g, '').trim();
+                        const provider = (_b = link.children[1].textContent) === null || _b === void 0 ? void 0 : _b.replace(/\n/g, '').trim();
+                        return { link: linkStr, price, provider };
+                    }
+                }
+            }).filter(item => {
+                if (item)
+                    return item;
+            }));
             const result = {
                 airlineImageList,
                 departureTimeList,
@@ -59,8 +78,7 @@ const getKayakCrawlingData = (country, city, travelDates) => {
                 layoverAirportList,
                 flightHoursList,
                 airportsList,
-                priceList,
-                linkList
+                priceAndProviderWithLinks
             };
             kayakData.push(result);
         }

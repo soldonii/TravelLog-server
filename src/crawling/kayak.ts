@@ -3,7 +3,7 @@ import { KAYAK_SELECTORS } from './selectors';
 
 import countryList from '../crawling/countryList.json';
 
-const KAYAK_URI_FRONT = 'https://www.kayak.co.kr/flights/ICN-';
+const KAYAK_URI_FRONT = 'https://kayak.co.kr/flights/ICN-';
 
 const getCityCode = (countryName: string, cityName: string) => {
   for (const country of countryList) {
@@ -29,7 +29,13 @@ const getKayakCrawlingData = (country: string, city: string, travelDates: Array<
   const kayakUrl = getKayakSearchUrl(country, city, travelDates);
 
   return (async () => {
-    const browser = await puppeteer.launch({ headless: false, defaultViewport: null, slowMo: 10 });
+    const browser = await puppeteer.launch({
+      headless: false,
+      defaultViewport: null,
+      slowMo: 10,
+      args: ['--window-size=1,1', '--window-position=3000,1000']
+    });
+
     const page = await browser.newPage();
 
     await page.goto(kayakUrl, { waitUntil: 'networkidle0' });
@@ -87,14 +93,24 @@ const getKayakCrawlingData = (country: string, city: string, travelDates: Array<
         airports => airports.map(airport => airport.textContent!).filter(airport => !airport.includes('\n'))
       );
 
-      const priceList = await div.$$eval(
-        KAYAK_SELECTORS.PRICE,
-        prices => prices.map(price => price.textContent?.replace(/\n/g, '').trim()!)
-      );
-
-      const linkList = await div.$$eval(
+      const priceAndProviderWithLinks = await div.$$eval(
         KAYAK_SELECTORS.LINK,
-        links => links.map(link => 'https://kayak.co.kr' + link.getAttribute('href')!)
+        links => links.map(link => {
+          const flag = link.children[1]
+
+          if (flag) {
+            const linkVal = link.getAttribute('href')!;
+            if (!linkVal.includes('javascript')) {
+              const linkStr = 'https://kayak.co.kr' + link.getAttribute('href')!;
+              const price = link.children[0].children[0].textContent?.replace(/\n/g, '').trim()!;
+              const provider = link.children[1].textContent?.replace(/\n/g, '').trim()!;
+
+              return { link: linkStr, price, provider };
+            }
+          }
+        }).filter(item => {
+          if (item) return item;
+        })
       );
 
       const result = {
@@ -106,8 +122,7 @@ const getKayakCrawlingData = (country: string, city: string, travelDates: Array<
         layoverAirportList,
         flightHoursList,
         airportsList,
-        priceList,
-        linkList
+        priceAndProviderWithLinks
       };
 
       kayakData.push(result);

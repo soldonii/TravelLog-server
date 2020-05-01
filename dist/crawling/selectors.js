@@ -11,7 +11,8 @@ exports.KAYAK_SELECTORS = {
     FLIGHT_HOURS: '.duration > .top',
     AIRPORTS: '.duration > .bottom > .bottom-airport > span',
     PRICE: '.price > .price-text',
-    LINK: '.booking-link'
+    LINK: '.booking-link',
+    PROVIDER: '.providerName'
 };
 exports.AIRBNB_SELECTORS = {
     RESULT_DIV: '._gig1e7',

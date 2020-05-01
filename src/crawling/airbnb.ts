@@ -17,16 +17,19 @@ const getAirbnbCrawlingData = (city: string, travelDates: Array<string>) => {
   const airbnbUrl = getAirbnbSearchUrl(city, travelDates);
 
   return (async () => {
-    const browser = await puppeteer.launch({ headless: false, defaultViewport: null, slowMo: 10 });
+    const browser = await puppeteer.launch({ headless: true, defaultViewport: null, slowMo: 10 });
     const page = await browser.newPage();
 
-    await page.goto(airbnbUrl, { waitUntil: 'networkidle0'});
+    console.log('airbnb url', airbnbUrl);
+    await page.goto(airbnbUrl, { waitUntil: 'networkidle0' });
+    await page.screenshot({ path: 'airbnb.png', fullPage: true });
 
     const airbnbData: any[] = [];
+
+    await page.waitFor(7000);
     const resultDivs = await page.$$(AIRBNB_SELECTORS.RESULT_DIV);
 
-    for (const div of resultDivs) {
-
+    for await (const div of resultDivs) {
       const descFlag1 = await div.$(AIRBNB_SELECTORS.DESCRIPTION1);
       let description;
 
