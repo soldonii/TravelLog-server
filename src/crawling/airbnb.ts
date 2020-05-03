@@ -87,7 +87,9 @@ const getAirbnbCrawlingData = (city: string, travelDates: Array<string>) => {
       const price = await div.$$eval(
         AIRBNB_SELECTORS.PRICE,
         prices => prices.filter(price => price.textContent !== '최저')
-          .map(price => price.textContent?.replace(/\n/g, '').trim()!)[0]
+          .map(price => {
+            return price.textContent?.replace(/\n|이전 가격:|할인 가격:|가격:/gi, '').trim()!.split('₩').slice(1);
+          })[0]
       );
 
       const imageFlag = await div.$(AIRBNB_SELECTORS.IMAGE1);
@@ -96,12 +98,12 @@ const getAirbnbCrawlingData = (city: string, travelDates: Array<string>) => {
       if (imageFlag) {
         image = await div.$eval(
           AIRBNB_SELECTORS.IMAGE1,
-          image => image.getAttribute('style')?.match(/\bhttps?:\/\/\S+/gi)![0]
+          image => image.getAttribute('style')?.slice(0, -3).match(/\bhttps?:\/\/\S+/gi)![0]
         );
       } else {
         image = await div.$eval(
           AIRBNB_SELECTORS.IMAGE2,
-          image => image.getAttribute('style')?.match(/\bhttps?:\/\/\S+/gi)![0]
+          image => image.getAttribute('style')?.slice(0, -3).match(/\bhttps?:\/\/\S+/gi)![0]
         );
       }
 

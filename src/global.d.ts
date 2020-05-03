@@ -6,6 +6,7 @@ declare global {
       MONGODB_URI: string;
       MONGODB_URI_TEST: string;
       JWT_SECRET_KEY: string;
+      CURRENCY_API_ENDPOINT: string;
     }
   }
 }

@@ -57,14 +57,17 @@ const getAirbnbCrawlingData = (city, travelDates) => {
                 infoList = await div.$$eval(selectors_1.AIRBNB_SELECTORS.INFO2, infos => infos.map(info => { var _a; return (_a = info.textContent) === null || _a === void 0 ? void 0 : _a.replace(/\n/g, '').trim(); }));
             }
             const price = await div.$$eval(selectors_1.AIRBNB_SELECTORS.PRICE, prices => prices.filter(price => price.textContent !== '최저')
-                .map(price => { var _a; return (_a = price.textContent) === null || _a === void 0 ? void 0 : _a.replace(/\n/g, '').trim(); })[0]);
+                .map(price => {
+                var _a;
+                return ((_a = price.textContent) === null || _a === void 0 ? void 0 : _a.replace(/\n|이전 가격:|할인 가격:|가격:/gi, '').trim()).split('₩').slice(1);
+            })[0]);
             const imageFlag = await div.$(selectors_1.AIRBNB_SELECTORS.IMAGE1);
             let image;
             if (imageFlag) {
-                image = await div.$eval(selectors_1.AIRBNB_SELECTORS.IMAGE1, image => { var _a; return ((_a = image.getAttribute('style')) === null || _a === void 0 ? void 0 : _a.match(/\bhttps?:\/\/\S+/gi))[0]; });
+                image = await div.$eval(selectors_1.AIRBNB_SELECTORS.IMAGE1, image => { var _a; return ((_a = image.getAttribute('style')) === null || _a === void 0 ? void 0 : _a.slice(0, -3).match(/\bhttps?:\/\/\S+/gi))[0]; });
             }
             else {
-                image = await div.$eval(selectors_1.AIRBNB_SELECTORS.IMAGE2, image => { var _a; return ((_a = image.getAttribute('style')) === null || _a === void 0 ? void 0 : _a.match(/\bhttps?:\/\/\S+/gi))[0]; });
+                image = await div.$eval(selectors_1.AIRBNB_SELECTORS.IMAGE2, image => { var _a; return ((_a = image.getAttribute('style')) === null || _a === void 0 ? void 0 : _a.slice(0, -3).match(/\bhttps?:\/\/\S+/gi))[0]; });
             }
             const link = await div.$eval(selectors_1.AIRBNB_SELECTORS.LINK, link => 'https://airbnb.co.kr' + link.getAttribute('href'));
             const result = {
