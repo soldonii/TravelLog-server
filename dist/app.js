@@ -11,14 +11,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const express_1 = __importStar(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
 const http_errors_1 = __importDefault(require("http-errors"));
-dotenv_1.default.config();
-require('./config/mongoose'); // 수정
+require("./config/mongoose");
 const auth_1 = __importDefault(require("./routes/auth"));
 const travel_1 = __importDefault(require("./routes/travel"));
+const dashboard_1 = __importDefault(require("./routes/dashboard"));
 const app = express_1.default();
 app.use(cors_1.default());
 app.use(morgan_1.default('dev'));
@@ -26,6 +27,7 @@ app.use(express_1.json());
 app.use(express_1.urlencoded({ extended: false }));
 app.use('/auth', auth_1.default);
 app.use('/travel', travel_1.default);
+app.use('/dashboard', dashboard_1.default);
 app.use('/', (req, res) => res.status(200).json({ result: 'ok' }));
 app.use((req, res, next) => {
     next(http_errors_1.default(404, 'Invalid Url'));

@@ -1,14 +1,15 @@
 import dotenv from 'dotenv';
+dotenv.config();
+
 import express, { Request, Response, NextFunction, json, urlencoded } from 'express';
 import logger from 'morgan';
 import cors from 'cors';
 import createError, { HttpError } from 'http-errors';
-
-dotenv.config();
-require('./config/mongoose'); // 수정
+import './config/mongoose';
 
 import authRouter from './routes/auth';
 import travelRouter from './routes/travel';
+import dashboardRouter from './routes/dashboard';
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(urlencoded({ extended: false }));
 
 app.use('/auth', authRouter);
 app.use('/travel', travelRouter);
+app.use('/dashboard', dashboardRouter)
 app.use('/', (req, res) => res.status(200).json({ result: 'ok' }));
 
 app.use((req, res, next) => {

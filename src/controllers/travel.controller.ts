@@ -1,29 +1,22 @@
-import util from 'util';
-import rs from 'randomstring';
-
 import { RequestHandler } from 'express';
+// import util from 'util';
 
-import axios from 'axios';
-
-import getKayakCrawlingData from '../crawling/kayak';
-import getAirbnbCrawlingData from '../crawling/airbnb';
+// import getKayakCrawlingData from '../crawling/kayak';
+// import getAirbnbCrawlingData from '../crawling/airbnb';
 
 import sample from '../crawling/sampleData.json';
-import sampleQuotes from '../lib/sampleQuotes.json';
-import currency from '../lib/currency.json';
-
-import Travel from '../models/Travel';
-
-import CATEGORY from '../lib/expenditureCategory';
 
 export const getCrawlingData: RequestHandler = async (req, res) => {
   const { country, city, travelDates }: { country: string, city: string, travelDates: Array<string> } = req.body;
 
   const timeout = setTimeout(() => {
     res.status(200).send(sample);
+    // res.status(500).json({
+    //   errorMessage: 'error'
+    // });
 
     clearTimeout(timeout);
-  }, 5000);
+  }, 2000);
 
   // const kayakData = await getKayakCrawlingData(country, city, travelDates);
   // console.log(util.inspect(kayakData, { showHidden: false, depth: null }));
@@ -36,126 +29,4 @@ export const getCrawlingData: RequestHandler = async (req, res) => {
   //   kayak: kayakData,
   //   // airbnb: airbnbData
   // });
-};
-
-export const saveTravelData: RequestHandler = async (req, res) => {
-  const { flightPrice, accomodationPrice, travelCountry, travelDayList } = req.body;
-  travelDayList.splice(0, 0, '출발 전');
-
-  const spendingByDates = {};
-  travelDayList.forEach(day => spendingByDates[day] = []);
-  spendingByDates['출발 전'].push({
-    category: CATEGORY.FLIGHT,
-    description: '항공권 구매',
-    amount: flightPrice,
-    location: {
-      title: '출발 전',
-      coordinates: ''
-    },
-    spendingId: rs.generate(6)
-  }, {
-    category: CATEGORY.ACCOMODATION,
-    description: '에어비앤비 숙소 구매',
-    amount: accomodationPrice,
-    location: {
-      title: '출발 전',
-      coordinates: ''
-    },
-    spendingId: rs.generate(6)
-  });
-
-  try {
-    const newTravel = await Travel.create({
-      country: travelCountry,
-      spendingByDates
-    });
-
-    res.status(200).json({
-      travelId: newTravel._id
-    });
-  } catch (err) {
-    console.error('saving travel info error', err);
-    res.status(500).json({
-      errorMessage: 'Server error. Please try again.'
-    });
-  }
-};
-
-export const sendInitialData: RequestHandler = async (req, res) => {
-  const { travelId } = req.query;
-
-  const travel = await Travel.findById(travelId);
-  const travelCountry = travel!.country;
-
-  const currencyCode = Object.keys(currency).find(code => {
-    return currency[code].toLowerCase().includes(travelCountry.toLowerCase())
-  }) || 'USD';
-
-  // const { response: { data: { quotes } } } = await axios.get(process.env.CURRENCY_API_ENDPOINT);
-  const quotes = sampleQuotes;
-
-  const usdToCode = quotes[`USD${currencyCode}`];
-  const usdToWon = quotes.USDKRW;
-
-  const currencyExchange = Math.round(usdToWon / usdToCode);
-
-  res.status(200).json({
-    travelCountry,
-    spendingByDates: travel!.spendingByDates,
-    currencyExchange,
-    currencyCode,
-  });
-};
-
-interface Spending {
-  travelId: string,
-  day: string,
-  spending: string,
-  chosenCategory: string,
-  description: string,
-  location: string,
-  coordinates: {
-    lat: number,
-    lng: number
-  }
-  spendingId: string
-}
-
-export const registerSpending: RequestHandler = async (req, res) => {
-  const data: Spending = req.body.data;
-
-  const { travelId, day, spending, chosenCategory, description, location, coordinates, spendingId } = data;
-
-  const spendingData = {
-    category: chosenCategory,
-    description,
-    amount: parseInt(spending),
-    location: {
-      title: location,
-      coordinates
-    },
-    spendingId
-  };
-
-  try {
-    const currentTravel = await Travel.findById(travelId);
-    const spendingByDates = currentTravel!.spendingByDates;
-
-    const idx = spendingByDates[day].findIndex(list => list.spendingId === spendingId);
-    if (idx > -1) {
-      spendingByDates[day][idx] = spendingData;
-    } else {
-      spendingByDates[day].push(spendingData);
-    }
-
-    await currentTravel?.updateOne({ spendingByDates }, { new: true });
-    res.status(200).json({
-      spendingByDates
-    });
-  } catch (err) {
-    console.error('saving spending error', err);
-    res.status(500).json({
-      error: '지출 내용을 저장하지 못했습니다. 잠시 후 다시 시도해주세요.'
-    });
-  }
 };

@@ -19,18 +19,22 @@ const findUserInDB: RequestHandler = async (req, res, next) => {
   const { id: kakaoId, properties: { nickname, email, profile_image } }: RequestBody = req.body;
   const user = await User.findOne({ kakaoId });
 
-  if (!user) {
-    const newUser = await User.create({
-      kakaoId,
-      nickname,
-      email,
-      profile_image,
-      travelList: []
-    });
+  try {
+    if (!user) {
+      const newUser = await User.create({
+        kakaoId,
+        nickname,
+        email,
+        profile_image,
+        travelList: []
+      });
 
-    res.locals.user = newUser;
-  } else {
-    res.locals.user = user;
+      res.locals.user = newUser;
+    } else {
+      res.locals.user = user;
+    }
+  } catch (err) {
+    console.error('signing up user error', err);
   }
 
   next();

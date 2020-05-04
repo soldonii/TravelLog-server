@@ -8,18 +8,23 @@ const User_1 = __importDefault(require("../models/User"));
 const findUserInDB = async (req, res, next) => {
     const { id: kakaoId, properties: { nickname, email, profile_image } } = req.body;
     const user = await User_1.default.findOne({ kakaoId });
-    if (!user) {
-        const newUser = await User_1.default.create({
-            kakaoId,
-            nickname,
-            email,
-            profile_image,
-            travelList: []
-        });
-        res.locals.user = newUser;
+    try {
+        if (!user) {
+            const newUser = await User_1.default.create({
+                kakaoId,
+                nickname,
+                email,
+                profile_image,
+                travelList: []
+            });
+            res.locals.user = newUser;
+        }
+        else {
+            res.locals.user = user;
+        }
     }
-    else {
-        res.locals.user = user;
+    catch (err) {
+        console.error('signing up user error', err);
     }
     next();
 };

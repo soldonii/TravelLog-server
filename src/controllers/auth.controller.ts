@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
-import jwt from 'jsonwebtoken';
 import { Types } from 'mongoose';
+import jwt from 'jsonwebtoken';
 
 interface User {
   _id: Types.ObjectId,
@@ -21,6 +21,7 @@ export const login: RequestHandler = async (req, res) => {
       (err, token) => {
         if (err) {
           console.error('jwt sign error', err);
+
           return res.status(500).json({
             errorMessage: 'Server error. Please try again.'
           });
@@ -31,6 +32,7 @@ export const login: RequestHandler = async (req, res) => {
     );
   } catch (err) {
     console.error('login error', err);
+
     res.status(500).json({
       errorMessage: 'Server error. Please try again.'
     });
