@@ -14,7 +14,7 @@ import { Document, model, Types, Schema } from 'mongoose';
 interface ITravelDocument extends Document {
   _id: Types.ObjectId;
   country: string,
-  dates: Object
+  spendingByDates: Object
 };
 
 const travelSchema = new Schema({
@@ -22,7 +22,7 @@ const travelSchema = new Schema({
     type: String,
     required: true
   },
-  dates: {}
+  spendingByDates: {}
 });
 
 export default model<ITravelDocument>('Travel', travelSchema);

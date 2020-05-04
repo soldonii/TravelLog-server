@@ -10,4 +10,5 @@ const travelRouter = express_1.Router();
 travelRouter.post('/', authenticate_1.default, travel_controller_1.getCrawlingData);
 travelRouter.get('/dashboard', authenticate_1.default, travel_controller_1.sendInitialData);
 travelRouter.post('/dashboard', authenticate_1.default, travel_controller_1.saveTravelData);
+travelRouter.put('/dashboard', authenticate_1.default, travel_controller_1.registerSpending);
 exports.default = travelRouter;

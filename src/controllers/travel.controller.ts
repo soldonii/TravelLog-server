@@ -1,4 +1,6 @@
 import util from 'util';
+import rs from 'randomstring';
+
 import { RequestHandler } from 'express';
 
 import axios from 'axios';
@@ -40,9 +42,9 @@ export const saveTravelData: RequestHandler = async (req, res) => {
   const { flightPrice, accomodationPrice, travelCountry, travelDayList } = req.body;
   travelDayList.splice(0, 0, '출발 전');
 
-  const dates = {};
-  travelDayList.forEach(day => dates[day] = []);
-  dates['출발 전'].push({
+  const spendingByDates = {};
+  travelDayList.forEach(day => spendingByDates[day] = []);
+  spendingByDates['출발 전'].push({
     category: CATEGORY.FLIGHT,
     description: '항공권 구매',
     amount: flightPrice,
@@ -50,7 +52,7 @@ export const saveTravelData: RequestHandler = async (req, res) => {
       title: '출발 전',
       coordinates: ''
     },
-    memo: '항공권 구매'
+    spendingId: rs.generate(6)
   }, {
     category: CATEGORY.ACCOMODATION,
     description: '에어비앤비 숙소 구매',
@@ -59,13 +61,13 @@ export const saveTravelData: RequestHandler = async (req, res) => {
       title: '출발 전',
       coordinates: ''
     },
-    memo: '에어비앤비 숙소 구매'
+    spendingId: rs.generate(6)
   });
 
   try {
     const newTravel = await Travel.create({
       country: travelCountry,
-      dates
+      spendingByDates
     });
 
     res.status(200).json({
@@ -82,16 +84,12 @@ export const saveTravelData: RequestHandler = async (req, res) => {
 export const sendInitialData: RequestHandler = async (req, res) => {
   const { travelId } = req.query;
 
-  // 위 아이디에 해당되는 정보 뽑아서 가져다주기.
   const travel = await Travel.findById(travelId);
-
   const travelCountry = travel!.country;
-  // const flightPrice = travel!.dates['출발 전'][0].amount;
-  // const accomodationPrice = travel!.dates['출발 전'][1].amount;
 
   const currencyCode = Object.keys(currency).find(code => {
     return currency[code].toLowerCase().includes(travelCountry.toLowerCase())
-  });
+  }) || 'USD';
 
   // const { response: { data: { quotes } } } = await axios.get(process.env.CURRENCY_API_ENDPOINT);
   const quotes = sampleQuotes;
@@ -103,8 +101,61 @@ export const sendInitialData: RequestHandler = async (req, res) => {
 
   res.status(200).json({
     travelCountry,
-    spendingByDates: travel!.dates,
+    spendingByDates: travel!.spendingByDates,
     currencyExchange,
-    currencyCode
+    currencyCode,
   });
+};
+
+interface Spending {
+  travelId: string,
+  day: string,
+  spending: string,
+  chosenCategory: string,
+  description: string,
+  location: string,
+  coordinates: {
+    lat: number,
+    lng: number
+  }
+  spendingId: string
+}
+
+export const registerSpending: RequestHandler = async (req, res) => {
+  const data: Spending = req.body.data;
+
+  const { travelId, day, spending, chosenCategory, description, location, coordinates, spendingId } = data;
+
+  const spendingData = {
+    category: chosenCategory,
+    description,
+    amount: parseInt(spending),
+    location: {
+      title: location,
+      coordinates
+    },
+    spendingId
+  };
+
+  try {
+    const currentTravel = await Travel.findById(travelId);
+    const spendingByDates = currentTravel!.spendingByDates;
+
+    const idx = spendingByDates[day].findIndex(list => list.spendingId === spendingId);
+    if (idx > -1) {
+      spendingByDates[day][idx] = spendingData;
+    } else {
+      spendingByDates[day].push(spendingData);
+    }
+
+    await currentTravel?.updateOne({ spendingByDates }, { new: true });
+    res.status(200).json({
+      spendingByDates
+    });
+  } catch (err) {
+    console.error('saving spending error', err);
+    res.status(500).json({
+      error: '지출 내용을 저장하지 못했습니다. 잠시 후 다시 시도해주세요.'
+    });
+  }
 };

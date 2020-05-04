@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const randomstring_1 = __importDefault(require("randomstring"));
 const sampleData_json_1 = __importDefault(require("../crawling/sampleData.json"));
 const sampleQuotes_json_1 = __importDefault(require("../lib/sampleQuotes.json"));
 const currency_json_1 = __importDefault(require("../lib/currency.json"));
@@ -27,9 +28,9 @@ exports.getCrawlingData = async (req, res) => {
 exports.saveTravelData = async (req, res) => {
     const { flightPrice, accomodationPrice, travelCountry, travelDayList } = req.body;
     travelDayList.splice(0, 0, '출발 전');
-    const dates = {};
-    travelDayList.forEach(day => dates[day] = []);
-    dates['출발 전'].push({
+    const spendingByDates = {};
+    travelDayList.forEach(day => spendingByDates[day] = []);
+    spendingByDates['출발 전'].push({
         category: expenditureCategory_1.default.FLIGHT,
         description: '항공권 구매',
         amount: flightPrice,
@@ -37,7 +38,7 @@ exports.saveTravelData = async (req, res) => {
             title: '출발 전',
             coordinates: ''
         },
-        memo: '항공권 구매'
+        spendingId: randomstring_1.default.generate(6)
     }, {
         category: expenditureCategory_1.default.ACCOMODATION,
         description: '에어비앤비 숙소 구매',
@@ -46,12 +47,12 @@ exports.saveTravelData = async (req, res) => {
             title: '출발 전',
             coordinates: ''
         },
-        memo: '에어비앤비 숙소 구매'
+        spendingId: randomstring_1.default.generate(6)
     });
     try {
         const newTravel = await Travel_1.default.create({
             country: travelCountry,
-            dates
+            spendingByDates
         });
         res.status(200).json({
             travelId: newTravel._id
@@ -66,14 +67,11 @@ exports.saveTravelData = async (req, res) => {
 };
 exports.sendInitialData = async (req, res) => {
     const { travelId } = req.query;
-    // 위 아이디에 해당되는 정보 뽑아서 가져다주기.
     const travel = await Travel_1.default.findById(travelId);
     const travelCountry = travel.country;
-    // const flightPrice = travel!.dates['출발 전'][0].amount;
-    // const accomodationPrice = travel!.dates['출발 전'][1].amount;
     const currencyCode = Object.keys(currency_json_1.default).find(code => {
         return currency_json_1.default[code].toLowerCase().includes(travelCountry.toLowerCase());
-    });
+    }) || 'USD';
     // const { response: { data: { quotes } } } = await axios.get(process.env.CURRENCY_API_ENDPOINT);
     const quotes = sampleQuotes_json_1.default;
     const usdToCode = quotes[`USD${currencyCode}`];
@@ -81,8 +79,43 @@ exports.sendInitialData = async (req, res) => {
     const currencyExchange = Math.round(usdToWon / usdToCode);
     res.status(200).json({
         travelCountry,
-        spendingByDates: travel.dates,
+        spendingByDates: travel.spendingByDates,
         currencyExchange,
-        currencyCode
+        currencyCode,
     });
+};
+exports.registerSpending = async (req, res) => {
+    const data = req.body.data;
+    const { travelId, day, spending, chosenCategory, description, location, coordinates, spendingId } = data;
+    const spendingData = {
+        category: chosenCategory,
+        description,
+        amount: parseInt(spending),
+        location: {
+            title: location,
+            coordinates
+        },
+        spendingId
+    };
+    try {
+        const currentTravel = await Travel_1.default.findById(travelId);
+        const spendingByDates = currentTravel.spendingByDates;
+        const idx = spendingByDates[day].findIndex(list => list.spendingId === spendingId);
+        if (idx > -1) {
+            spendingByDates[day][idx] = spendingData;
+        }
+        else {
+            spendingByDates[day].push(spendingData);
+        }
+        await (currentTravel === null || currentTravel === void 0 ? void 0 : currentTravel.updateOne({ spendingByDates }, { new: true }));
+        res.status(200).json({
+            spendingByDates
+        });
+    }
+    catch (err) {
+        console.error('saving spending error', err);
+        res.status(500).json({
+            error: '지출 내용을 저장하지 못했습니다. 잠시 후 다시 시도해주세요.'
+        });
+    }
 };

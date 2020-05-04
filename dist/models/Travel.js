@@ -7,7 +7,7 @@ const travelSchema = new mongoose_1.Schema({
         type: String,
         required: true
     },
-    dates: {}
+    spendingByDates: {}
 });
 exports.default = mongoose_1.model('Travel', travelSchema);
 // const dates = {
