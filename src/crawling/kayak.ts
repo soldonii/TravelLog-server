@@ -25,8 +25,27 @@ const getKayakSearchUrl = (country: string, city: string, travelDates: Array<str
   return KAYAK_URI_FRONT + cityCode + '/' + departureDate + '/' + arrivalDate;
 };
 
+// interface IPriceWithLinks {
+//   link: string;
+//   price: string;
+//   provider: string;
+// };
+
+// interface Result {
+//   airlineImageList: Array<string[]>;
+//   departureTimeList: string[];
+//   arrivalTimeList: string[];
+//   airlinesList: string[];
+//   layoverTimeList: string[];
+//   layoverAirportList: string[];
+//   flightHoursList: string[];
+//   airportsList: string[];
+//   priceAndProviderWithLinks: Array<IPriceWithLinks>;
+// }
+
 const getKayakCrawlingData = (country: string, city: string, travelDates: Array<string>) => {
   const kayakUrl = getKayakSearchUrl(country, city, travelDates);
+  const kayakData: any[] = [];
 
   return (async () => {
     const browser = await puppeteer.launch({
@@ -37,10 +56,11 @@ const getKayakCrawlingData = (country: string, city: string, travelDates: Array<
     });
 
     const page = await browser.newPage();
+    await page.goto(kayakUrl);
+    await page.waitForFunction('document.querySelector(".Common-Results-ProgressBar > .bar") && document.querySelector(".Common-Results-ProgressBar > .bar").style.transform === "translateX(100%)"', {
+      timeout: 60000
+    });
 
-    await page.goto(kayakUrl, { waitUntil: 'networkidle0' });
-
-    const kayakData: any[] = [];
     const resultDivs = await page.$$(KAYAK_SELECTORS.RESULT_DIV);
 
     for await (const div of resultDivs) {
@@ -108,9 +128,7 @@ const getKayakCrawlingData = (country: string, city: string, travelDates: Array<
               return { link: linkStr, price, provider };
             }
           }
-        }).filter(item => {
-          if (item) return item;
-        })
+        }).filter(obj => obj !== null && obj)
       );
 
       const result = {

@@ -24,8 +24,25 @@ const getKayakSearchUrl = (country, city, travelDates) => {
     const arrivalDate = travelDates[1].slice(0, 10);
     return KAYAK_URI_FRONT + cityCode + '/' + departureDate + '/' + arrivalDate;
 };
+// interface IPriceWithLinks {
+//   link: string;
+//   price: string;
+//   provider: string;
+// };
+// interface Result {
+//   airlineImageList: Array<string[]>;
+//   departureTimeList: string[];
+//   arrivalTimeList: string[];
+//   airlinesList: string[];
+//   layoverTimeList: string[];
+//   layoverAirportList: string[];
+//   flightHoursList: string[];
+//   airportsList: string[];
+//   priceAndProviderWithLinks: Array<IPriceWithLinks>;
+// }
 const getKayakCrawlingData = (country, city, travelDates) => {
     const kayakUrl = getKayakSearchUrl(country, city, travelDates);
+    const kayakData = [];
     return (async () => {
         const browser = await puppeteer_1.default.launch({
             headless: false,
@@ -34,8 +51,10 @@ const getKayakCrawlingData = (country, city, travelDates) => {
             args: ['--window-size=1,1', '--window-position=3000,1000']
         });
         const page = await browser.newPage();
-        await page.goto(kayakUrl, { waitUntil: 'networkidle0' });
-        const kayakData = [];
+        await page.goto(kayakUrl);
+        await page.waitForFunction('document.querySelector(".Common-Results-ProgressBar > .bar") && document.querySelector(".Common-Results-ProgressBar > .bar").style.transform === "translateX(100%)"', {
+            timeout: 60000
+        });
         const resultDivs = await page.$$(selectors_1.KAYAK_SELECTORS.RESULT_DIV);
         for await (const div of resultDivs) {
             const airlineImageList = await div.$$eval(selectors_1.KAYAK_SELECTORS.AIRLINE_IMAGE, divs => divs.map(div => {
@@ -65,10 +84,7 @@ const getKayakCrawlingData = (country, city, travelDates) => {
                         return { link: linkStr, price, provider };
                     }
                 }
-            }).filter(item => {
-                if (item)
-                    return item;
-            }));
+            }).filter(obj => obj !== null && obj));
             const result = {
                 airlineImageList,
                 departureTimeList,

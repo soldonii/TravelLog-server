@@ -13,106 +13,148 @@ const getAirbnbSearchUrl = (city: string, travelDates: Array<string>) => {
     + `checkin=${departureDate}&checkout=${arrivalDate}` + AIRBNB_SEARCH_URI_BACK;
 };
 
+interface Result {
+  description: string;
+  title: string;
+  infoList: string[];
+  price: string[];
+  image: string;
+  link: string;
+};
+
 const getAirbnbCrawlingData = (city: string, travelDates: Array<string>) => {
   const airbnbUrl = getAirbnbSearchUrl(city, travelDates);
+  const airbnbData: Result[] = [];
 
   return (async () => {
-    const browser = await puppeteer.launch({ headless: true, defaultViewport: null, slowMo: 10 });
+    const browser = await puppeteer.launch({ headless: false, defaultViewport: null, slowMo: 10 });
     const page = await browser.newPage();
 
-    console.log('airbnb url', airbnbUrl);
     await page.goto(airbnbUrl, { waitUntil: 'networkidle0' });
-    await page.screenshot({ path: 'airbnb.png', fullPage: true });
 
-    const airbnbData: any[] = [];
-
-    await page.waitFor(7000);
     const resultDivs = await page.$$(AIRBNB_SELECTORS.RESULT_DIV);
 
     for await (const div of resultDivs) {
-      const descFlag1 = await div.$(AIRBNB_SELECTORS.DESCRIPTION1);
-      let description;
+      let description = '';
+      let title = '';
+      let infoList: string[] = [];
+      let price: string[] = [];
+      let image = '';
+      let link = '';
 
-      if (descFlag1) {
-        description = await div.$eval(
-          AIRBNB_SELECTORS.DESCRIPTION1,
-          description => description.textContent?.replace(/\n/g, '').trim()!
-        );
-      } else {
-        const descFlag2 = await div.$(AIRBNB_SELECTORS.DESCRIPTION2);
+      try {
+        const descSelector1 = await div.$(AIRBNB_SELECTORS.DESCRIPTION1);
+        const descSelector2 = await div.$(AIRBNB_SELECTORS.DESCRIPTION2);
+        const descSelector3 = await div.$(AIRBNB_SELECTORS.DESCRIPTION3);
 
-        if (descFlag2) {
+        let descriptionSelector;
+        if (descSelector1) descriptionSelector = AIRBNB_SELECTORS.DESCRIPTION1;
+        else if (descSelector2) descriptionSelector = AIRBNB_SELECTORS.DESCRIPTION2;
+        else if (descSelector3) descriptionSelector = AIRBNB_SELECTORS.DESCRIPTION3;
+
+        if (descriptionSelector) {
           description = await div.$eval(
-            AIRBNB_SELECTORS.DESCRIPTION2,
-            description => description.textContent?.replace(/\n/g, '').trim()!
-          );
-        } else {
-          description = await div.$eval(
-            AIRBNB_SELECTORS.DESCRIPTION3,
-            description => description.textContent?.replace(/\n/g, '').trim()!
+            descriptionSelector,
+            desc => desc.textContent?.replace(/\n/g, '').trim()!
           );
         }
+      } catch (err) {
+        console.error('airbnb description error', err);
       }
 
-      const titleFlag = await div.$(AIRBNB_SELECTORS.TITLE1);
-      let title;
+      try {
+        const titleSelector1 = await div.$(AIRBNB_SELECTORS.TITLE1);
+        const titleSelector2 = await div.$(AIRBNB_SELECTORS.TITLE2);
 
-      if (titleFlag) {
-        title = await div.$eval(
-          AIRBNB_SELECTORS.TITLE1,
-          title => title.textContent?.replace(/\n/g, '').trim()!
-        );
-      } else {
-        title = await div.$eval(
-          AIRBNB_SELECTORS.TITLE2,
-          title => title.textContent?.replace(/\n/g, '').trim()!
-        );
+        let titleSelector;
+        if (titleSelector1) titleSelector = AIRBNB_SELECTORS.TITLE1;
+        else if (titleSelector2) titleSelector = AIRBNB_SELECTORS.TITLE2;
+
+        if (titleSelector) {
+          title = await div.$eval(
+            titleSelector,
+            title => title.textContent?.replace(/\n/g, '').trim()!
+          );
+        }
+      } catch (err) {
+        console.error('airbnb title error', err);
       }
 
-      const infoFlag = await div.$(AIRBNB_SELECTORS.INFO1);
-      let infoList;
+      try {
+        const infoSelector1 = await div.$(AIRBNB_SELECTORS.INFO1);
+        const infoSelector2 = await div.$(AIRBNB_SELECTORS.INFO2);
 
-      if (infoFlag) {
-        infoList = await div.$$eval(
-          AIRBNB_SELECTORS.INFO1,
-          infos => infos.map(info => info.textContent?.replace(/\n/g, '').trim()!)
-        );
-      } else {
-        infoList = await div.$$eval(
-          AIRBNB_SELECTORS.INFO2,
-          infos => infos.map(info => info.textContent?.replace(/\n/g, '').trim()!)
-        );
+        let infoSelector;
+        if (infoSelector1) infoSelector = AIRBNB_SELECTORS.INFO1;
+        else if (infoSelector2) infoSelector = AIRBNB_SELECTORS.INFO2;
+
+        if (infoSelector) {
+          infoList = await div.$$eval(
+            infoSelector,
+            infos => infos.map(info => info.textContent?.replace(/\n/g, '').trim()!)
+          );
+        }
+      } catch (err) {
+        console.error('airbnb infoList error', err);
       }
 
-      const price = await div.$$eval(
-        AIRBNB_SELECTORS.PRICE,
-        prices => prices.filter(price => price.textContent !== '최저')
-          .map(price => {
-            return price.textContent?.replace(/\n|이전 가격:|할인 가격:|가격:/gi, '').trim()!.split('₩').slice(1);
-          })[0]
-      );
+      try {
+        const priceSelector = await div.$(AIRBNB_SELECTORS.PRICE);
 
-      const imageFlag = await div.$(AIRBNB_SELECTORS.IMAGE1);
-      let image;
-
-      if (imageFlag) {
-        image = await div.$eval(
-          AIRBNB_SELECTORS.IMAGE1,
-          image => image.getAttribute('style')?.slice(0, -3).match(/\bhttps?:\/\/\S+/gi)![0]
-        );
-      } else {
-        image = await div.$eval(
-          AIRBNB_SELECTORS.IMAGE2,
-          image => image.getAttribute('style')?.slice(0, -3).match(/\bhttps?:\/\/\S+/gi)![0]
-        );
+        if (priceSelector) {
+          price = await div.$$eval(
+            AIRBNB_SELECTORS.PRICE,
+            prices => prices.filter(price => price.textContent !== '최저')
+            .map(price => {
+              return price.textContent?.replace(/\n|이전 가격:|할인 가격:|가격:/gi, '').trim()!.split('₩').slice(1);
+            })[0]
+          );
+        }
+      } catch (err) {
+        console.error('airbnb price error', err);
       }
 
-      const link = await div.$eval(
-        AIRBNB_SELECTORS.LINK,
-        link => 'https://airbnb.co.kr' + link.getAttribute('href')!
-      );
+      try {
+        const imageSelector1 = await div.$(AIRBNB_SELECTORS.IMAGE1);
+        const imageSelector2 = await div.$(AIRBNB_SELECTORS.IMAGE2);
+        const imageSelector3 = await div.$(AIRBNB_SELECTORS.IMAGE3);
 
-      const result = {
+        let imageSelector;
+
+        if (imageSelector3) {
+          image = await div.$eval(
+            AIRBNB_SELECTORS.IMAGE3,
+            image => image.getAttribute('data-original-uri')!
+          );
+        } else {
+          if (imageSelector1) imageSelector = AIRBNB_SELECTORS.IMAGE1;
+          else if (imageSelector2) imageSelector = AIRBNB_SELECTORS.IMAGE2;
+
+          if (imageSelector) {
+            image = await div.$eval(
+              imageSelector,
+              image => image.getAttribute('style')?.slice(0, -3).match(/\bhttps?:\/\/\S+/gi)![0]
+            );
+          }
+        }
+      } catch (err) {
+        console.error('airbnb image error', err);
+      }
+
+      try {
+        const linkSelector = await div.$(AIRBNB_SELECTORS.LINK);
+
+        if (linkSelector) {
+          link = await div.$eval(
+            AIRBNB_SELECTORS.LINK,
+            link => 'https://airbnb.co.kr' + link.getAttribute('href')!
+          );
+        }
+      } catch (err) {
+        console.error('airbnb link error', err);
+      }
+
+      const result: Result = {
         description,
         title,
         infoList,

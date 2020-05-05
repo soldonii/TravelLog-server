@@ -25,5 +25,6 @@ export const AIRBNB_SELECTORS = {
   PRICE: '._1p7iugi',
   IMAGE1: '._6ikqekk',
   IMAGE2: '._1i2fr3fi',
+  IMAGE3: '._e296pg > picture > img',
   LINK: '._i24ijs'
 };
