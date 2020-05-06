@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const randomstring_1 = __importDefault(require("randomstring"));
+const axios_1 = __importDefault(require("axios"));
 const Travel_1 = __importDefault(require("../models/Travel"));
-const sampleQuotes_json_1 = __importDefault(require("../lib/sampleQuotes.json"));
 const currency_json_1 = __importDefault(require("../lib/currency.json"));
 const spendingCategory_1 = __importDefault(require("../lib/spendingCategory"));
 const SEOUL_LATLNG = {
@@ -60,8 +60,8 @@ exports.sendInitialData = async (req, res) => {
     const currencyCode = Object.keys(currency_json_1.default).find(code => {
         return currency_json_1.default[code].toLowerCase().includes(travelCountry.toLowerCase());
     }) || 'USD';
-    // const { response: { data: { quotes } } } = await axios.get(process.env.CURRENCY_API_ENDPOINT);
-    const quotes = sampleQuotes_json_1.default;
+    const response = await axios_1.default.get(process.env.CURRENCY_API_ENDPOINT);
+    const quotes = response.data.quotes;
     const USD_TO_CURRENCYCODE = quotes[`USD${currencyCode}`];
     const USD_TO_KOREAN_CURRENCY = quotes.USDKRW;
     const currencyExchange = Math.round(USD_TO_KOREAN_CURRENCY / USD_TO_CURRENCYCODE);
@@ -116,4 +116,20 @@ exports.registerSpending = async (req, res) => {
             error: '지출 내용을 저장하지 못했습니다. 잠시 후 다시 시도해주세요.'
         });
     }
+};
+exports.deleteSpending = async (req, res) => {
+    const { travelId, spendingId } = req.body;
+    const currentTravel = await Travel_1.default.findById(travelId);
+    const spendingByDates = currentTravel.spendingByDates;
+    for (const date in spendingByDates) {
+        const idx = spendingByDates[date].findIndex(list => list.spendingId === spendingId);
+        if (idx > -1) {
+            spendingByDates[date].splice(idx, 1);
+            break;
+        }
+    }
+    await (currentTravel === null || currentTravel === void 0 ? void 0 : currentTravel.updateOne({ spendingByDates }, { new: true }));
+    res.status(200).json({
+        spendingByDates
+    });
 };

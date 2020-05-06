@@ -10,4 +10,5 @@ const dashboardRouter = express_1.Router();
 dashboardRouter.get('/', authenticate_1.default, dashboard_controller_1.sendInitialData);
 dashboardRouter.post('/', authenticate_1.default, dashboard_controller_1.saveTravelData);
 dashboardRouter.put('/', authenticate_1.default, dashboard_controller_1.registerSpending);
+dashboardRouter.delete('/', authenticate_1.default, dashboard_controller_1.deleteSpending);
 exports.default = dashboardRouter;

@@ -1,16 +1,12 @@
-import puppeteer from 'puppeteer';
+import puppeteer, { ElementHandle } from 'puppeteer';
 import { AIRBNB_SELECTORS } from './selectors';
-
-const AIRBNB_SEARCH_URI_FRONT = 'https://airbnb.co.kr/s/';
-const AIRBNB_SEARCH_URI_MID = '/homes?tab_id=all_tab&refinement_paths%5B%5D=%2Fhomes&';
-const AIRBNB_SEARCH_URI_BACK = '&adults=1&source=structured_search_input_header&search_type=search_query';
 
 const getAirbnbSearchUrl = (city: string, travelDates: Array<string>) => {
   const departureDate = travelDates[0].slice(0, 10);
   const arrivalDate = travelDates[1].slice(0, 10);
 
-  return AIRBNB_SEARCH_URI_FRONT + city + AIRBNB_SEARCH_URI_MID
-    + `checkin=${departureDate}&checkout=${arrivalDate}` + AIRBNB_SEARCH_URI_BACK;
+  return process.env.AIRBNB_SEARCH_URI_FRONT + city + process.env.AIRBNB_SEARCH_URI_MID
+    + `checkin=${departureDate}&checkout=${arrivalDate}` + process.env.AIRBNB_SEARCH_URI_BACK;
 };
 
 interface Result {
@@ -21,6 +17,16 @@ interface Result {
   image: string;
   link: string;
 };
+
+async function findValidSelector(targetDiv: ElementHandle, ...args: string[]) {
+  for await (const selector of args) {
+    const result = await targetDiv.$(selector);
+
+    if (result) {
+      return selector;
+    }
+  }
+}
 
 const getAirbnbCrawlingData = (city: string, travelDates: Array<string>) => {
   const airbnbUrl = getAirbnbSearchUrl(city, travelDates);
@@ -43,19 +49,17 @@ const getAirbnbCrawlingData = (city: string, travelDates: Array<string>) => {
       let link = '';
 
       try {
-        const descSelector1 = await div.$(AIRBNB_SELECTORS.DESCRIPTION1);
-        const descSelector2 = await div.$(AIRBNB_SELECTORS.DESCRIPTION2);
-        const descSelector3 = await div.$(AIRBNB_SELECTORS.DESCRIPTION3);
+        const validDescriptionSelector = await findValidSelector(
+          div,
+          AIRBNB_SELECTORS.DESCRIPTION1,
+          AIRBNB_SELECTORS.DESCRIPTION2,
+          AIRBNB_SELECTORS.DESCRIPTION3,
+        );
 
-        let descriptionSelector;
-        if (descSelector1) descriptionSelector = AIRBNB_SELECTORS.DESCRIPTION1;
-        else if (descSelector2) descriptionSelector = AIRBNB_SELECTORS.DESCRIPTION2;
-        else if (descSelector3) descriptionSelector = AIRBNB_SELECTORS.DESCRIPTION3;
-
-        if (descriptionSelector) {
+        if (validDescriptionSelector) {
           description = await div.$eval(
-            descriptionSelector,
-            desc => desc.textContent?.replace(/\n/g, '').trim()!
+            validDescriptionSelector,
+            description => description.textContent?.replace(/\n/g, '').trim()!
           );
         }
       } catch (err) {
@@ -63,16 +67,15 @@ const getAirbnbCrawlingData = (city: string, travelDates: Array<string>) => {
       }
 
       try {
-        const titleSelector1 = await div.$(AIRBNB_SELECTORS.TITLE1);
-        const titleSelector2 = await div.$(AIRBNB_SELECTORS.TITLE2);
+        const validTitleSelector = await findValidSelector(
+          div,
+          AIRBNB_SELECTORS.TITLE1,
+          AIRBNB_SELECTORS.TITLE2
+        );
 
-        let titleSelector;
-        if (titleSelector1) titleSelector = AIRBNB_SELECTORS.TITLE1;
-        else if (titleSelector2) titleSelector = AIRBNB_SELECTORS.TITLE2;
-
-        if (titleSelector) {
+        if (validTitleSelector) {
           title = await div.$eval(
-            titleSelector,
+            validTitleSelector,
             title => title.textContent?.replace(/\n/g, '').trim()!
           );
         }
@@ -81,16 +84,15 @@ const getAirbnbCrawlingData = (city: string, travelDates: Array<string>) => {
       }
 
       try {
-        const infoSelector1 = await div.$(AIRBNB_SELECTORS.INFO1);
-        const infoSelector2 = await div.$(AIRBNB_SELECTORS.INFO2);
+        const validInfoSelector = await findValidSelector(
+          div,
+          AIRBNB_SELECTORS.INFO1,
+          AIRBNB_SELECTORS.INFO2
+        );
 
-        let infoSelector;
-        if (infoSelector1) infoSelector = AIRBNB_SELECTORS.INFO1;
-        else if (infoSelector2) infoSelector = AIRBNB_SELECTORS.INFO2;
-
-        if (infoSelector) {
+        if (validInfoSelector) {
           infoList = await div.$$eval(
-            infoSelector,
+            validInfoSelector,
             infos => infos.map(info => info.textContent?.replace(/\n/g, '').trim()!)
           );
         }
@@ -115,24 +117,22 @@ const getAirbnbCrawlingData = (city: string, travelDates: Array<string>) => {
       }
 
       try {
-        const imageSelector1 = await div.$(AIRBNB_SELECTORS.IMAGE1);
-        const imageSelector2 = await div.$(AIRBNB_SELECTORS.IMAGE2);
-        const imageSelector3 = await div.$(AIRBNB_SELECTORS.IMAGE3);
+        const validImageSelector = await findValidSelector(
+          div,
+          AIRBNB_SELECTORS.IMAGE1,
+          AIRBNB_SELECTORS.IMAGE2,
+          AIRBNB_SELECTORS.IMAGE3
+        );
 
-        let imageSelector;
-
-        if (imageSelector3) {
-          image = await div.$eval(
-            AIRBNB_SELECTORS.IMAGE3,
-            image => image.getAttribute('data-original-uri')!
-          );
-        } else {
-          if (imageSelector1) imageSelector = AIRBNB_SELECTORS.IMAGE1;
-          else if (imageSelector2) imageSelector = AIRBNB_SELECTORS.IMAGE2;
-
-          if (imageSelector) {
+        if (validImageSelector) {
+          if (validImageSelector === AIRBNB_SELECTORS.IMAGE3) {
             image = await div.$eval(
-              imageSelector,
+              validImageSelector,
+              image => image.getAttribute('data-original-uri')!
+            );
+          } else {
+            image = await div.$eval(
+              validImageSelector,
               image => image.getAttribute('style')?.slice(0, -3).match(/\bhttps?:\/\/\S+/gi)![0]
             );
           }
@@ -166,6 +166,7 @@ const getAirbnbCrawlingData = (city: string, travelDates: Array<string>) => {
       airbnbData.push(result);
     }
 
+    await browser.close();
     return airbnbData;
   })();
 };

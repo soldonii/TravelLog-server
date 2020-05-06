@@ -1,10 +1,10 @@
 import { RequestHandler } from 'express';
 import rs from 'randomstring';
+import axios from 'axios';
 
 import Travel from '../models/Travel';
 
-import sampleQuotes from '../lib/sampleQuotes.json';
-import currency from '../lib/currency.json';
+import CURRENCY from '../lib/currency.json';
 import CATEGORY from '../lib/spendingCategory';
 
 const SEOUL_LATLNG = {
@@ -71,12 +71,12 @@ export const sendInitialData: RequestHandler = async (req, res) => {
   const travel = await Travel.findById(travelId);
   const travelCountry = travel!.country;
 
-  const currencyCode = Object.keys(currency).find(code => {
-    return currency[code].toLowerCase().includes(travelCountry.toLowerCase())
+  const currencyCode = Object.keys(CURRENCY).find(code => {
+    return CURRENCY[code].toLowerCase().includes(travelCountry.toLowerCase())
   }) || 'USD';
 
-  // const { response: { data: { quotes } } } = await axios.get(process.env.CURRENCY_API_ENDPOINT);
-  const quotes = sampleQuotes;
+  const response = await axios.get(process.env.CURRENCY_API_ENDPOINT);
+  const quotes = response.data.quotes;
 
   const USD_TO_CURRENCYCODE = quotes[`USD${currencyCode}`];
   const USD_TO_KOREAN_CURRENCY = quotes.USDKRW;
@@ -156,4 +156,26 @@ export const registerSpending: RequestHandler = async (req, res) => {
       error: '지출 내용을 저장하지 못했습니다. 잠시 후 다시 시도해주세요.'
     });
   }
+};
+
+export const deleteSpending: RequestHandler = async (req, res) => {
+  const { travelId, spendingId } = req.body;
+
+  const currentTravel = await Travel.findById(travelId);
+
+  const spendingByDates = currentTravel!.spendingByDates;
+  for (const date in spendingByDates) {
+    const idx = spendingByDates[date].findIndex(list => list.spendingId === spendingId);
+
+    if (idx > -1) {
+      spendingByDates[date].splice(idx, 1);
+      break;
+    }
+  }
+
+  await currentTravel?.updateOne({ spendingByDates }, { new: true });
+
+  res.status(200).json({
+    spendingByDates
+  });
 };

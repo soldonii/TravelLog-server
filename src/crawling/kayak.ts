@@ -25,27 +25,27 @@ const getKayakSearchUrl = (country: string, city: string, travelDates: Array<str
   return KAYAK_URI_FRONT + cityCode + '/' + departureDate + '/' + arrivalDate;
 };
 
-// interface IPriceWithLinks {
-//   link: string;
-//   price: string;
-//   provider: string;
-// };
+interface IPriceWithLinks {
+  link: string;
+  price: string;
+  provider: string;
+};
 
-// interface Result {
-//   airlineImageList: Array<string[]>;
-//   departureTimeList: string[];
-//   arrivalTimeList: string[];
-//   airlinesList: string[];
-//   layoverTimeList: string[];
-//   layoverAirportList: string[];
-//   flightHoursList: string[];
-//   airportsList: string[];
-//   priceAndProviderWithLinks: Array<IPriceWithLinks>;
-// }
+interface Result {
+  airlineImageList: Array<string[]>;
+  departureTimeList: string[];
+  arrivalTimeList: string[];
+  airlinesList: string[];
+  layoverTimeList: string[];
+  layoverAirportList: string[];
+  flightHoursList: string[];
+  airportsList: string[];
+  priceAndProviderWithLinks: Array<IPriceWithLinks | null>;
+}
 
 const getKayakCrawlingData = (country: string, city: string, travelDates: Array<string>) => {
   const kayakUrl = getKayakSearchUrl(country, city, travelDates);
-  const kayakData: any[] = [];
+  const kayakData: Result[] = [];
 
   return (async () => {
     const browser = await puppeteer.launch({
@@ -56,70 +56,122 @@ const getKayakCrawlingData = (country: string, city: string, travelDates: Array<
     });
 
     const page = await browser.newPage();
-    await page.goto(kayakUrl);
-    await page.waitForFunction('document.querySelector(".Common-Results-ProgressBar > .bar") && document.querySelector(".Common-Results-ProgressBar > .bar").style.transform === "translateX(100%)"', {
-      timeout: 60000
-    });
+
+    try {
+      await page.goto(kayakUrl, { waitUntil: 'networkidle0' });
+      await page.waitForFunction('document.querySelector(".Common-Results-ProgressBar > .bar") && document.querySelector(".Common-Results-ProgressBar > .bar").style.transform === "translateX(100%)"', {
+        timeout: 60000
+      });
+    } catch (err) {
+      console.error('kayak connection error', err);
+    }
 
     const resultDivs = await page.$$(KAYAK_SELECTORS.RESULT_DIV);
 
     for await (const div of resultDivs) {
-      const airlineImageList = await div.$$eval(
-        KAYAK_SELECTORS.AIRLINE_IMAGE,
-        divs => divs.map(div => {
-          const imageList: string[] = [];
-          const airlines = div.children;
+      const result: Result = {
+        airlineImageList: [],
+        departureTimeList: [],
+        arrivalTimeList: [],
+        airlinesList: [],
+        layoverTimeList: [],
+        layoverAirportList: [],
+        flightHoursList: [],
+        airportsList: [],
+        priceAndProviderWithLinks: []
+      };
 
-          for (const airline of airlines) {
-            imageList.push(airline.children[0].getAttribute('src')!);
-          }
+      try {
+        result.airlineImageList = await div.$$eval(
+          KAYAK_SELECTORS.AIRLINE_IMAGE,
+          divs => divs.map(div => {
+            const imageList: string[] = [];
+            const airlines = div.children;
 
-          return imageList;
-        })
-      );
+            for (const airline of airlines) {
+              imageList.push(airline.children[0].getAttribute('src')!);
+            }
 
-      const departureTimeList = await div.$$eval(
-        KAYAK_SELECTORS.DEPARTURE_TIME,
-        times => times.map(time => time.textContent?.replace(/\n/g, '').trim()!)
-      );
+            return imageList;
+          })
+        );
+      } catch (err) {
+        console.error('kayak image error', err);
+      }
 
-      const arrivalTimeList = await div.$$eval(
-        KAYAK_SELECTORS.ARRIVAL_TIME,
-        times => times.map(time => time.textContent?.replace(/\n/g, '').trim()!)
-      );
+      try {
+        result.departureTimeList = await div.$$eval(
+          KAYAK_SELECTORS.DEPARTURE_TIME,
+          times => times.map(time => time.textContent?.replace(/\n/g, '').trim()!)
+        );
+      } catch (err) {
+        console.error('kayak departure time error', err);
+      }
 
-      const airlinesList = await div.$$eval(
-        KAYAK_SELECTORS.AIRLINES,
-        airlines => airlines.map(airline => airline.textContent?.replace(/\n/g, '').trim()!)
-      );
+      try {
+        result.arrivalTimeList = await div.$$eval(
+          KAYAK_SELECTORS.ARRIVAL_TIME,
+          times => times.map(time => time.textContent?.replace(/\n/g, '').trim()!)
+        );
+      } catch (err) {
+        console.error('kayak arrival time error', err);
+      }
 
-      const layoverTimeList = await div.$$eval(
-        KAYAK_SELECTORS.LAYOVER_TIME,
-        times => times.map(time => time.textContent?.replace(/\n/g, '').trim()!)
-      );
+      try {
+        result.airlinesList = await div.$$eval(
+          KAYAK_SELECTORS.AIRLINES,
+          airlines => airlines.map(airline => airline.textContent?.replace(/\n/g, '').trim()!)
+        );
+      } catch (err) {
+        console.error('kayak airline list error', err);
+      }
 
-      const layoverAirportList = await div.$$eval(
-        KAYAK_SELECTORS.LAYOVER_AIRPORT,
-        airports => airports.map(airport => airport.textContent?.replace(/\n/g, '').trim()!)
-      );
+      try {
+        result.layoverTimeList = await div.$$eval(
+          KAYAK_SELECTORS.LAYOVER_TIME,
+          times => times.map(time => time.textContent?.replace(/\n/g, '').trim()!)
+        );
+      } catch (err) {
+        console.error('kayak layover time error', err);
+      }
 
-      const flightHoursList = await div.$$eval(
-        KAYAK_SELECTORS.FLIGHT_HOURS,
-        hours => hours.map(hour => hour.textContent?.replace(/\n/g, '').trim()!)
-      );
+      try {
+        result.layoverAirportList = await div.$$eval(
+          KAYAK_SELECTORS.LAYOVER_AIRPORT,
+          airports => airports.map(airport => airport.textContent?.replace(/\n/g, '').trim()!)
+        );
+      } catch (err) {
+        console.error('kayak layover airport list error', err);
+      }
 
-      const airportsList = await div.$$eval(
-        KAYAK_SELECTORS.AIRPORTS,
-        airports => airports.map(airport => airport.textContent!).filter(airport => !airport.includes('\n'))
-      );
+      try {
+        result.flightHoursList = await div.$$eval(
+          KAYAK_SELECTORS.FLIGHT_HOURS,
+          hours => hours.map(hour => hour.textContent?.replace(/\n/g, '').trim()!)
+        );
+      } catch (err) {
+        console.error('kayak flight hours error', err);
+      }
 
-      const priceAndProviderWithLinks = await div.$$eval(
-        KAYAK_SELECTORS.LINK,
-        links => links.map(link => {
-          const flag = link.children[1]
+      try {
+        result.airportsList = await div.$$eval(
+          KAYAK_SELECTORS.AIRPORTS,
+          airports => airports.map(airport => airport.textContent!).filter(airport => !airport.includes('\n'))
+        );
+      } catch (err) {
+        console.error('kayak airports list error', err);
+      }
 
-          if (flag) {
+      try {
+        result.priceAndProviderWithLinks = await div.$$eval(
+          KAYAK_SELECTORS.LINK,
+          links => links.map(link => {
+            const flag = link.children[1];
+
+            if (!flag) return null;
+
             const linkVal = link.getAttribute('href')!;
+
             if (!linkVal.includes('javascript')) {
               const linkStr = 'https://kayak.co.kr' + link.getAttribute('href')!;
               const price = link.children[0].children[0].textContent?.replace(/\n/g, '').trim()!;
@@ -127,25 +179,18 @@ const getKayakCrawlingData = (country: string, city: string, travelDates: Array<
 
               return { link: linkStr, price, provider };
             }
-          }
-        }).filter(obj => obj !== null && obj)
-      );
 
-      const result = {
-        airlineImageList,
-        departureTimeList,
-        arrivalTimeList,
-        airlinesList,
-        layoverTimeList,
-        layoverAirportList,
-        flightHoursList,
-        airportsList,
-        priceAndProviderWithLinks
-      };
+            return null;
+          }).filter(obj => obj !== null)
+        );
+      } catch (err) {
+        console.error('kayak price and provider error', err);
+      }
 
       kayakData.push(result);
     }
 
+    await browser.close();
     return kayakData;
   })();
 };
