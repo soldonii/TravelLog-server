@@ -33,7 +33,7 @@ const getKayakCrawlingData = (country, city, travelDates) => {
             headless: false,
             defaultViewport: null,
             slowMo: 10,
-            args: ['--window-size=1,1', '--window-position=3000,1000']
+            args: ['--window-size=1,1', '--window-position=3000,1000', '--no-sandbox', '--disable-setuid-sandbox']
         });
         const page = await browser.newPage();
         try {

@@ -33,7 +33,12 @@ const getAirbnbCrawlingData = (city: string, travelDates: Array<string>) => {
   const airbnbData: Result[] = [];
 
   return (async () => {
-    const browser = await puppeteer.launch({ headless: false, defaultViewport: null, slowMo: 10 });
+    const browser = await puppeteer.launch({
+      headless: false,
+      defaultViewport: null,
+      slowMo: 10,
+      args: [ '--no-sandbox', '--disable-setuid-sandbox' ]
+    });
     const page = await browser.newPage();
 
     await page.goto(airbnbUrl, { waitUntil: 'networkidle0' });
