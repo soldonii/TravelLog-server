@@ -12,7 +12,7 @@ const authenticateUser = (req, res, next) => {
         });
     }
     try {
-        const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET_KEY);
+        jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET_KEY);
         next();
     }
     catch (err) {

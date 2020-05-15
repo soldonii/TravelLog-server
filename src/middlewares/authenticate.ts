@@ -11,7 +11,7 @@ const authenticateUser: RequestHandler = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    jwt.verify(token, process.env.JWT_SECRET_KEY);
     next();
   } catch (err) {
     console.error('authentication error', err);

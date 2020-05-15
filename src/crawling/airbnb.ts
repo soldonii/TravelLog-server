@@ -34,14 +34,14 @@ const getAirbnbCrawlingData = (city: string, travelDates: Array<string>) => {
 
   return (async () => {
     const browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
       defaultViewport: null,
       slowMo: 10,
       args: [ '--no-sandbox', '--disable-setuid-sandbox' ]
     });
-    const page = await browser.newPage();
 
-    await page.goto(airbnbUrl, { waitUntil: 'networkidle0' });
+    const page = await browser.newPage();
+    await page.goto(airbnbUrl, { waitUntil: 'networkidle0', timeout: 0 });
 
     const resultDivs = await page.$$(AIRBNB_SELECTORS.RESULT_DIV);
 
@@ -126,11 +126,13 @@ const getAirbnbCrawlingData = (city: string, travelDates: Array<string>) => {
           div,
           AIRBNB_SELECTORS.IMAGE1,
           AIRBNB_SELECTORS.IMAGE2,
-          AIRBNB_SELECTORS.IMAGE3
+          AIRBNB_SELECTORS.IMAGE3,
+          AIRBNB_SELECTORS.IMAGE4
         );
 
         if (validImageSelector) {
-          if (validImageSelector === AIRBNB_SELECTORS.IMAGE3) {
+          if (validImageSelector === AIRBNB_SELECTORS.IMAGE3 ||
+              validImageSelector === AIRBNB_SELECTORS.IMAGE4) {
             image = await div.$eval(
               validImageSelector,
               image => image.getAttribute('data-original-uri')!
@@ -171,7 +173,6 @@ const getAirbnbCrawlingData = (city: string, travelDates: Array<string>) => {
       airbnbData.push(result);
     }
 
-    await browser.close();
     return airbnbData;
   })();
 };

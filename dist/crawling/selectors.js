@@ -27,5 +27,6 @@ exports.AIRBNB_SELECTORS = {
     IMAGE1: '._6ikqekk',
     IMAGE2: '._1i2fr3fi',
     IMAGE3: '._e296pg > picture > img',
+    IMAGE4: '._9ofhsl',
     LINK: '._i24ijs'
 };

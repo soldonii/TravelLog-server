@@ -1,9 +1,8 @@
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 import { KAYAK_SELECTORS } from './selectors';
 
 import countryList from '../crawling/countryList.json';
-
-const KAYAK_URI_FRONT = 'https://kayak.co.kr/flights/ICN-';
 
 const getCityCode = (countryName: string, cityName: string) => {
   for (const country of countryList) {
@@ -22,7 +21,7 @@ const getKayakSearchUrl = (country: string, city: string, travelDates: Array<str
   const departureDate = travelDates[0].slice(0, 10);
   const arrivalDate = travelDates[1].slice(0, 10);
 
-  return KAYAK_URI_FRONT + cityCode + '/' + departureDate + '/' + arrivalDate;
+  return process.env.KAYAK_URI_FRONT + cityCode + '/' + departureDate + '/' + arrivalDate;
 };
 
 interface IPriceWithLinks {
@@ -41,26 +40,26 @@ interface Result {
   flightHoursList: string[];
   airportsList: string[];
   priceAndProviderWithLinks: Array<IPriceWithLinks | null>;
-}
+};
 
 const getKayakCrawlingData = (country: string, city: string, travelDates: Array<string>) => {
   const kayakUrl = getKayakSearchUrl(country, city, travelDates);
   const kayakData: Result[] = [];
 
   return (async () => {
-    const browser = await puppeteer.launch({
-      headless: false,
+    const browser = await puppeteer.use(StealthPlugin()).launch({
+      headless: true,
       defaultViewport: null,
       slowMo: 10,
-      args: [ '--window-size=1,1', '--window-position=3000,1000', '--no-sandbox', '--disable-setuid-sandbox' ]
+      args: [ '--no-sandbox', '--disable-setuid-sandbox' ]
     });
 
     const page = await browser.newPage();
 
     try {
-      await page.goto(kayakUrl, { waitUntil: 'networkidle0' });
-      await page.waitForFunction('document.querySelector(".Common-Results-ProgressBar > .bar") && document.querySelector(".Common-Results-ProgressBar > .bar").style.transform === "translateX(100%)"', {
-        timeout: 60000
+      await page.goto(kayakUrl, { timeout: 50 * 1000 });
+      await page.waitForFunction('document.querySelector(".Common-Results-ProgressBar > .bar") && parseInt(document.querySelector(".Common-Results-ProgressBar > .bar").style.transform.slice(11, -2)) > 35', {
+        timeout: 50 * 1000
       });
     } catch (err) {
       console.error('kayak connection error', err);
@@ -95,6 +94,7 @@ const getKayakCrawlingData = (country: string, city: string, travelDates: Array<
             return imageList;
           })
         );
+
       } catch (err) {
         console.error('kayak image error', err);
       }
@@ -190,7 +190,6 @@ const getKayakCrawlingData = (country: string, city: string, travelDates: Array<
       kayakData.push(result);
     }
 
-    await browser.close();
     return kayakData;
   })();
 };

@@ -28,7 +28,6 @@ app.use(express_1.urlencoded({ extended: false }));
 app.use('/auth', auth_1.default);
 app.use('/travel', travel_1.default);
 app.use('/dashboard', dashboard_1.default);
-app.use('/', (req, res) => res.status(200).json({ result: 'ok' }));
 app.use((req, res, next) => {
     next(http_errors_1.default(404, 'Invalid Url'));
 });

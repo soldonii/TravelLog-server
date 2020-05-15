@@ -3,10 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const puppeteer_1 = __importDefault(require("puppeteer"));
+const puppeteer_extra_1 = __importDefault(require("puppeteer-extra"));
+const puppeteer_extra_plugin_stealth_1 = __importDefault(require("puppeteer-extra-plugin-stealth"));
 const selectors_1 = require("./selectors");
 const countryList_json_1 = __importDefault(require("../crawling/countryList.json"));
-const KAYAK_URI_FRONT = 'https://kayak.co.kr/flights/ICN-';
 const getCityCode = (countryName, cityName) => {
     for (const country of countryList_json_1.default) {
         if (country.Name === countryName) {
@@ -22,24 +22,25 @@ const getKayakSearchUrl = (country, city, travelDates) => {
     const cityCode = getCityCode(country, city);
     const departureDate = travelDates[0].slice(0, 10);
     const arrivalDate = travelDates[1].slice(0, 10);
-    return KAYAK_URI_FRONT + cityCode + '/' + departureDate + '/' + arrivalDate;
+    return process.env.KAYAK_URI_FRONT + cityCode + '/' + departureDate + '/' + arrivalDate;
 };
+;
 ;
 const getKayakCrawlingData = (country, city, travelDates) => {
     const kayakUrl = getKayakSearchUrl(country, city, travelDates);
     const kayakData = [];
     return (async () => {
-        const browser = await puppeteer_1.default.launch({
-            headless: false,
+        const browser = await puppeteer_extra_1.default.use(puppeteer_extra_plugin_stealth_1.default()).launch({
+            headless: true,
             defaultViewport: null,
             slowMo: 10,
-            args: ['--window-size=1,1', '--window-position=3000,1000', '--no-sandbox', '--disable-setuid-sandbox']
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
         const page = await browser.newPage();
         try {
-            await page.goto(kayakUrl, { waitUntil: 'networkidle0' });
-            await page.waitForFunction('document.querySelector(".Common-Results-ProgressBar > .bar") && document.querySelector(".Common-Results-ProgressBar > .bar").style.transform === "translateX(100%)"', {
-                timeout: 60000
+            await page.goto(kayakUrl, { timeout: 50 * 1000 });
+            await page.waitForFunction('document.querySelector(".Common-Results-ProgressBar > .bar") && parseInt(document.querySelector(".Common-Results-ProgressBar > .bar").style.transform.slice(11, -2)) > 35', {
+                timeout: 50 * 1000
             });
         }
         catch (err) {
@@ -134,7 +135,6 @@ const getKayakCrawlingData = (country, city, travelDates) => {
             }
             kayakData.push(result);
         }
-        await browser.close();
         return kayakData;
     })();
 };

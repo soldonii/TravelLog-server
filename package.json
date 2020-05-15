@@ -4,17 +4,17 @@
   "description": "Note everything of your travel.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "NODE_ENV=dev nodemon dist/app.js"
+    "dev": "NODE_ENV=dev nodemon dist/app.js",
+    "start": "NODE_ENV=production node dist/app.js"
   },
   "author": "soldonii",
   "license": "ISC",
+  "engines": {
+    "node": "12.16.1"
+  },
   "dependencies": {
-    "@types/randomstring": "^1.1.6",
-    "aws-sdk": "^2.662.0",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
-    "cheerio": "^1.0.0-rc.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -22,13 +22,10 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.10",
     "morgan": "^1.10.0",
-    "multer": "^1.4.2",
-    "multer-s3": "^2.9.0",
-    "promise-poller": "^1.9.1",
-    "puppeteer": "^3.0.2",
-    "randomstring": "^1.1.5",
-    "request": "^2.88.2",
-    "request-promise-native": "^1.0.8"
+    "puppeteer": "^3.0.3",
+    "puppeteer-extra": "^3.1.9",
+    "puppeteer-extra-plugin-stealth": "^2.4.9",
+    "randomstring": "^1.1.5"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -39,9 +36,8 @@
     "@types/mongoose": "^5.7.12",
     "@types/morgan": "^1.9.0",
     "@types/node": "^13.13.2",
-    "@types/promise-poller": "^1.7.0",
     "@types/puppeteer": "^2.0.1",
-    "@types/request-promise-native": "^1.0.17",
+    "@types/randomstring": "^1.1.6",
     "chai": "^4.2.0",
     "mocha": "^7.1.1",
     "nodemon": "^2.0.3"

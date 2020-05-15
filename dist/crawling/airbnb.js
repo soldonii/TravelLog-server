@@ -25,13 +25,13 @@ const getAirbnbCrawlingData = (city, travelDates) => {
     const airbnbData = [];
     return (async () => {
         const browser = await puppeteer_1.default.launch({
-            headless: false,
+            headless: true,
             defaultViewport: null,
             slowMo: 10,
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
         const page = await browser.newPage();
-        await page.goto(airbnbUrl, { waitUntil: 'networkidle0' });
+        await page.goto(airbnbUrl, { waitUntil: 'networkidle0', timeout: 0 });
         const resultDivs = await page.$$(selectors_1.AIRBNB_SELECTORS.RESULT_DIV);
         for await (const div of resultDivs) {
             let description = '';
@@ -81,9 +81,10 @@ const getAirbnbCrawlingData = (city, travelDates) => {
                 console.error('airbnb price error', err);
             }
             try {
-                const validImageSelector = await findValidSelector(div, selectors_1.AIRBNB_SELECTORS.IMAGE1, selectors_1.AIRBNB_SELECTORS.IMAGE2, selectors_1.AIRBNB_SELECTORS.IMAGE3);
+                const validImageSelector = await findValidSelector(div, selectors_1.AIRBNB_SELECTORS.IMAGE1, selectors_1.AIRBNB_SELECTORS.IMAGE2, selectors_1.AIRBNB_SELECTORS.IMAGE3, selectors_1.AIRBNB_SELECTORS.IMAGE4);
                 if (validImageSelector) {
-                    if (validImageSelector === selectors_1.AIRBNB_SELECTORS.IMAGE3) {
+                    if (validImageSelector === selectors_1.AIRBNB_SELECTORS.IMAGE3 ||
+                        validImageSelector === selectors_1.AIRBNB_SELECTORS.IMAGE4) {
                         image = await div.$eval(validImageSelector, image => image.getAttribute('data-original-uri'));
                     }
                     else {
@@ -113,7 +114,6 @@ const getAirbnbCrawlingData = (city, travelDates) => {
             };
             airbnbData.push(result);
         }
-        await browser.close();
         return airbnbData;
     })();
 };

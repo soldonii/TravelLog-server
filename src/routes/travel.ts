@@ -2,13 +2,17 @@ import { Router } from 'express';
 
 import authenticateUser from '../middlewares/authenticate';
 import {
-  getCrawlingData
+  getKayakData,
+  getAirbnbData,
+  sendAllTravelData
 } from '../controllers/travel.controller';
 
 const travelRouter = Router();
 
-travelRouter.post('/', authenticateUser, getCrawlingData);
+travelRouter.post('/kayak', authenticateUser, getKayakData);
 
-// travel.get 하면 기록되어 있는 모든 여행들 정보 가져오기.
+travelRouter.post('/airbnb', authenticateUser, getAirbnbData);
+
+travelRouter.get('/', authenticateUser, sendAllTravelData);
 
 export default travelRouter;

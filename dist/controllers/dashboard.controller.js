@@ -4,9 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const randomstring_1 = __importDefault(require("randomstring"));
-const axios_1 = __importDefault(require("axios"));
+// import axios from 'axios';
 const Travel_1 = __importDefault(require("../models/Travel"));
-const currency_json_1 = __importDefault(require("../lib/currency.json"));
+const currencyCode_json_1 = __importDefault(require("../lib/currencyCode.json"));
+const currency_json_1 = __importDefault(require("../crawling/currency.json"));
 const spendingCategory_1 = __importDefault(require("../lib/spendingCategory"));
 const SEOUL_LATLNG = {
     lat: 37.566536,
@@ -57,11 +58,12 @@ exports.sendInitialData = async (req, res) => {
     const { travelId } = req.query;
     const travel = await Travel_1.default.findById(travelId);
     const travelCountry = travel.country;
-    const currencyCode = Object.keys(currency_json_1.default).find(code => {
-        return currency_json_1.default[code].toLowerCase().includes(travelCountry.toLowerCase());
+    const currencyCode = Object.keys(currencyCode_json_1.default).find(code => {
+        return currencyCode_json_1.default[code].toLowerCase().includes(travelCountry.toLowerCase());
     }) || 'USD';
-    const response = await axios_1.default.get(process.env.CURRENCY_API_ENDPOINT);
-    const quotes = response.data.quotes;
+    // api request limit exceeded.(2020-05-08)
+    // const response = await axios.get(process.env.CURRENCY_API_ENDPOINT);
+    const quotes = currency_json_1.default;
     const USD_TO_CURRENCYCODE = quotes[`USD${currencyCode}`];
     const USD_TO_KOREAN_CURRENCY = quotes.USDKRW;
     const currencyExchange = Math.round(USD_TO_KOREAN_CURRENCY / USD_TO_CURRENCYCODE);

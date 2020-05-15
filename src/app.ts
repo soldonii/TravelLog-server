@@ -21,7 +21,6 @@ app.use(urlencoded({ extended: false }));
 app.use('/auth', authRouter);
 app.use('/travel', travelRouter);
 app.use('/dashboard', dashboardRouter)
-app.use('/', (req, res) => res.status(200).json({ result: 'ok' }));
 
 app.use((req, res, next) => {
   next(createError(404, 'Invalid Url'));

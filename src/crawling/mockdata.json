@@ -1,0 +1,542 @@
+[
+  [
+    {
+      "airlineImageList": [
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ],
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ]
+      ],
+      "departureTimeList": ["10:45", "06:25"],
+      "arrivalTimeList": ["13:36", "16:30"],
+      "airlinesList": ["델타항공", "델타항공"],
+      "layoverTimeList": ["1회 경유", "1회 경유"],
+      "layoverAirportList": ["DTW", "DTW"],
+      "flightHoursList": ["15시간 51분", "21시간 05분"],
+      "airportsList": ["ICN", "IAD", "DCA", "ICN"],
+      "priceAndProviderWithLinks": [
+        {
+          "link": "https://kayak.co.kr/book/flight?code=GEHCGVK7bc.ToX9mfccdpY.79374.61487f291f1dadb1245625ab99ddcbc4&h=1749c122b00c&sub=E-10aa0748700&payment=0.0000:KRW:VA:Visa:true",
+          "price": "972,200원",
+          "provider": "델타항공"
+        }
+      ]
+    },
+    {
+      "airlineImageList": [
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ],
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ]
+      ],
+      "departureTimeList": ["10:45", "06:25"],
+      "arrivalTimeList": ["17:07", "16:30"],
+      "airlinesList": ["델타항공", "델타항공"],
+      "layoverTimeList": ["1회 경유", "1회 경유"],
+      "layoverAirportList": ["DTW", "DTW"],
+      "flightHoursList": ["19시간 22분", "21시간 05분"],
+      "airportsList": ["ICN", "DCA", "DCA", "ICN"],
+      "priceAndProviderWithLinks": [
+        {
+          "link": "https://kayak.co.kr/book/flight?code=GEHCGVK7bc.ToX9mfccdpY.79374.c26f688bcdb9686fdd2c88fa71fe7d99&h=19674f7f7896&sub=E-10aa0748700&payment=0.0000:KRW:VA:Visa:true",
+          "price": "972,200원",
+          "provider": "델타항공"
+        }
+      ]
+    },
+    {
+      "airlineImageList": [
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ],
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ]
+      ],
+      "departureTimeList": ["09:20", "06:25"],
+      "arrivalTimeList": ["15:21", "16:30"],
+      "airlinesList": ["델타항공", "델타항공"],
+      "layoverTimeList": ["1회 경유", "1회 경유"],
+      "layoverAirportList": ["ATL", "DTW"],
+      "flightHoursList": ["19시간 01분", "21시간 05분"],
+      "airportsList": ["ICN", "IAD", "DCA", "ICN"],
+      "priceAndProviderWithLinks": [
+        {
+          "link": "https://kayak.co.kr/book/flight?code=GEHCGVK7bc.ToX9mfccdpY.84926.5a618bd7092dba6cef9032422eae1b96&h=c809c2b51717&sub=E-10aa0748700&payment=0.0000:KRW:VA:Visa:true",
+          "price": "1,040,200원",
+          "provider": "델타항공"
+        }
+      ]
+    },
+    {
+      "airlineImageList": [
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ],
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ]
+      ],
+      "departureTimeList": ["10:45", "07:00"],
+      "arrivalTimeList": ["13:36", "16:20"],
+      "airlinesList": ["델타항공", "델타항공"],
+      "layoverTimeList": ["1회 경유", "1회 경유"],
+      "layoverAirportList": ["DTW", "ATL"],
+      "flightHoursList": ["15시간 51분", "20시간 20분"],
+      "airportsList": ["ICN", "IAD", "IAD", "ICN"],
+      "priceAndProviderWithLinks": [
+        {
+          "link": "https://kayak.co.kr/book/flight?code=GEHCGVK7bc.ToX9mfccdpY.96878.10ea9743ddf2cc4c87a88e389b2bc28e&h=40177aba8a47&sub=E-10aa0748700&payment=0.0000:KRW:VA:Visa:true",
+          "price": "1,186,600원",
+          "provider": "델타항공"
+        }
+      ]
+    },
+    {
+      "airlineImageList": [
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ],
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ]
+      ],
+      "departureTimeList": ["10:45", "06:30"],
+      "arrivalTimeList": ["13:36", "16:20"],
+      "airlinesList": ["델타항공", "델타항공"],
+      "layoverTimeList": ["1회 경유", "1회 경유"],
+      "layoverAirportList": ["DTW", "ATL"],
+      "flightHoursList": ["15시간 51분", "20시간 50분"],
+      "airportsList": ["ICN", "IAD", "DCA", "ICN"],
+      "priceAndProviderWithLinks": [
+        {
+          "link": "https://kayak.co.kr/book/flight?code=GEHCGVK7bc.ToX9mfccdpY.96878.1277305f11f82084b8769f282e78cd17&h=c8f29d27f070&sub=E-10aa0748700&payment=0.0000:KRW:VA:Visa:true",
+          "price": "1,186,600원",
+          "provider": "델타항공"
+        }
+      ]
+    },
+    {
+      "airlineImageList": [
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ],
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ]
+      ],
+      "departureTimeList": ["10:45", "07:00"],
+      "arrivalTimeList": ["17:07", "16:20"],
+      "airlinesList": ["델타항공", "델타항공"],
+      "layoverTimeList": ["1회 경유", "1회 경유"],
+      "layoverAirportList": ["DTW", "ATL"],
+      "flightHoursList": ["19시간 22분", "20시간 20분"],
+      "airportsList": ["ICN", "DCA", "IAD", "ICN"],
+      "priceAndProviderWithLinks": [
+        {
+          "link": "https://kayak.co.kr/book/flight?code=GEHCGVK7bc.ToX9mfccdpY.96878.6af767b6a9aa5dc71896c38194880958&h=7aaa46693f94&sub=E-10aa0748700&payment=0.0000:KRW:VA:Visa:true",
+          "price": "1,186,600원",
+          "provider": "델타항공"
+        }
+      ]
+    },
+    {
+      "airlineImageList": [
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ],
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ]
+      ],
+      "departureTimeList": ["10:45", "15:45"],
+      "arrivalTimeList": ["13:36", "05:10"],
+      "airlinesList": ["델타항공", "델타항공"],
+      "layoverTimeList": ["1회 경유", "2회 경유"],
+      "layoverAirportList": ["DTW", "DTW", "LAX"],
+      "flightHoursList": ["15시간 51분", "24시간 25분"],
+      "airportsList": ["ICN", "IAD", "BWI", "ICN"],
+      "priceAndProviderWithLinks": [
+        {
+          "link": "https://kayak.co.kr/book/flight?code=GEHCGVK7bc.ToX9mfccdpY.114562.c529b4516bf32baa046a31c90bd1e454&h=468b8a3e99a6&sub=E-10aa0748700&payment=0.0000:KRW:VA:Visa:true",
+          "price": "1,403,200원",
+          "provider": "델타항공"
+        }
+      ]
+    },
+    {
+      "airlineImageList": [
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ],
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ]
+      ],
+      "departureTimeList": ["10:45", "06:25"],
+      "arrivalTimeList": ["13:36", "16:30"],
+      "airlinesList": ["델타항공", "델타항공"],
+      "layoverTimeList": ["1회 경유", "1회 경유"],
+      "layoverAirportList": ["DTW", "DTW"],
+      "flightHoursList": ["15시간 51분", "21시간 05분"],
+      "airportsList": ["ICN", "BWI", "DCA", "ICN"],
+      "priceAndProviderWithLinks": [
+        {
+          "link": "https://kayak.co.kr/book/flight?code=GEHCGVK7bc.ToX9mfccdpY.121910.939d14f36ae1b04204c976611ac84e69&h=7427fee76f30&sub=E-10aa0748700&payment=0.0000:KRW:VA:Visa:true",
+          "price": "1,493,200원",
+          "provider": "델타항공"
+        }
+      ]
+    },
+    {
+      "airlineImageList": [
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/KE.png?crop=false&width=108&height=92&fallback=default1.png&_v=ede880e3ca147c319c2c61ccb3b6ba5932bc856f"
+        ],
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/FI.png?crop=false&width=108&height=92&fallback=default3.png&_v=3addf30da36d0fbe34a7379ca02bf4cd0a388f46",
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/KL.png?crop=false&width=108&height=92&fallback=default2.png&_v=dc5dedbaee1bbc08335899c1d6985a2ddcd6ad85"
+        ]
+      ],
+      "departureTimeList": ["10:45", "23:40"],
+      "arrivalTimeList": ["13:36", "14:55"],
+      "airlinesList": ["대한항공", "아이슬란드항공, KLM"],
+      "layoverTimeList": ["1회 경유", "2회 경유"],
+      "layoverAirportList": ["DTW", "KEF", "AMS"],
+      "flightHoursList": ["15시간 51분", "26시간 15분"],
+      "airportsList": ["ICN", "BWI", "IAD", "ICN"],
+      "priceAndProviderWithLinks": [
+        {
+          "link": "https://kayak.co.kr/book/flight?code=GEHCGVK7bc.47F3EeHCWiIEdn9PX-8xhQ.246396.64739f98caa19d15d28125f2367b6d70&h=a25a11df4e41&sub=E-18360ac693f&payment=0.0000:KRW:VA:Visa:true",
+          "price": "3,017,966원",
+          "provider": "Kiwi.com"
+        }
+      ]
+    },
+    {
+      "airlineImageList": [
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ],
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/KE.png?crop=false&width=108&height=92&fallback=default1.png&_v=ede880e3ca147c319c2c61ccb3b6ba5932bc856f"
+        ]
+      ],
+      "departureTimeList": ["10:45", "09:55"],
+      "arrivalTimeList": ["13:36", "16:30"],
+      "airlinesList": ["델타항공", "대한항공"],
+      "layoverTimeList": ["1회 경유", "1회 경유"],
+      "layoverAirportList": ["DTW", "DTW"],
+      "flightHoursList": ["15시간 51분", "17시간 35분"],
+      "airportsList": ["ICN", "BWI", "IAD", "ICN"],
+      "priceAndProviderWithLinks": []
+    },
+    {
+      "airlineImageList": [
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ],
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/KE.png?crop=false&width=108&height=92&fallback=default1.png&_v=ede880e3ca147c319c2c61ccb3b6ba5932bc856f"
+        ]
+      ],
+      "departureTimeList": ["10:45", "09:55"],
+      "arrivalTimeList": ["19:38", "16:30"],
+      "airlinesList": ["델타항공", "대한항공"],
+      "layoverTimeList": ["2회 경유", "1회 경유"],
+      "layoverAirportList": ["DTW", "ATL", "DTW"],
+      "flightHoursList": ["21시간 53분", "17시간 35분"],
+      "airportsList": ["ICN", "BWI", "IAD", "ICN"],
+      "priceAndProviderWithLinks": []
+    },
+    {
+      "airlineImageList": [
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ],
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/KE.png?crop=false&width=108&height=92&fallback=default1.png&_v=ede880e3ca147c319c2c61ccb3b6ba5932bc856f"
+        ]
+      ],
+      "departureTimeList": ["10:45", "09:55"],
+      "arrivalTimeList": ["21:14", "16:30"],
+      "airlinesList": ["델타항공", "대한항공"],
+      "layoverTimeList": ["2회 경유", "1회 경유"],
+      "layoverAirportList": ["DTW", "ATL", "DTW"],
+      "flightHoursList": ["23시간 29분", "17시간 35분"],
+      "airportsList": ["ICN", "IAD", "IAD", "ICN"],
+      "priceAndProviderWithLinks": []
+    },
+    {
+      "airlineImageList": [
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ],
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/KE.png?crop=false&width=108&height=92&fallback=default1.png&_v=ede880e3ca147c319c2c61ccb3b6ba5932bc856f"
+        ]
+      ],
+      "departureTimeList": ["10:45", "09:55"],
+      "arrivalTimeList": ["21:32", "16:30"],
+      "airlinesList": ["델타항공", "대한항공"],
+      "layoverTimeList": ["2회 경유", "1회 경유"],
+      "layoverAirportList": ["DTW", "ATL", "DTW"],
+      "flightHoursList": ["23시간 47분", "17시간 35분"],
+      "airportsList": ["ICN", "DCA", "IAD", "ICN"],
+      "priceAndProviderWithLinks": []
+    },
+    {
+      "airlineImageList": [
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ],
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/KE.png?crop=false&width=108&height=92&fallback=default1.png&_v=ede880e3ca147c319c2c61ccb3b6ba5932bc856f"
+        ]
+      ],
+      "departureTimeList": ["10:45", "09:55"],
+      "arrivalTimeList": ["21:43", "16:30"],
+      "airlinesList": ["델타항공", "대한항공"],
+      "layoverTimeList": ["1회 경유", "1회 경유"],
+      "layoverAirportList": ["DTW", "DTW"],
+      "flightHoursList": ["23시간 58분", "17시간 35분"],
+      "airportsList": ["ICN", "DCA", "IAD", "ICN"],
+      "priceAndProviderWithLinks": []
+    },
+    {
+      "airlineImageList": [
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/DL.png?crop=false&width=108&height=92&fallback=default1.png&_v=c12d18e5ad31cc4d51b7c3c702b1fe1b849a76d3"
+        ],
+        [
+          "https://content.r9cdn.net/rimg/provider-logos/airlines/v/KE.png?crop=false&width=108&height=92&fallback=default1.png&_v=ede880e3ca147c319c2c61ccb3b6ba5932bc856f"
+        ]
+      ],
+      "departureTimeList": ["10:45", "09:55"],
+      "arrivalTimeList": ["22:20", "16:30"],
+      "airlinesList": ["델타항공", "대한항공"],
+      "layoverTimeList": ["1회 경유", "1회 경유"],
+      "layoverAirportList": ["DTW", "DTW"],
+      "flightHoursList": ["24시간 35분", "17시간 35분"],
+      "airportsList": ["ICN", "IAD", "IAD", "ICN"],
+      "priceAndProviderWithLinks": []
+    }
+  ],
+  [
+    {
+      "description": "셔(Shaw)의 아파트 전체",
+      "title": "Stylish Studio in the Heart of DC.",
+      "infoList": ["인원 2명 · 원룸 · 침대 1개 · 욕실 1개", "무선 인터넷"],
+      "price": ["70,762"],
+      "image": "https://a0.muscache.com/im/pictures/d94207a3-1516-4e84-b00a-89ce96cebc74.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/15728962?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "듀퐁서클(Dupont Circle)의 아파트 전체",
+      "title": "Studio in the best location of Dupont",
+      "infoList": [
+        "인원 2명 · 원룸 · 침대 0개 · 욕실 1개",
+        "무선 인터넷 · 주방 · 세탁기"
+      ],
+      "price": ["84,696"],
+      "image": "https://a0.muscache.com/im/pictures/d756450c-7c2b-40cb-9cee-df0adf3f7c17.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/27960316?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "펫워스(Petworth)의 아파트 전체",
+      "title": "Entire Basement Apartment with Private Entrance",
+      "infoList": [
+        "인원 2명 · 침실 1개 · 침대 1개 · 욕실 1개",
+        "무선 인터넷 · 주방 · 세탁기"
+      ],
+      "price": ["82,661"],
+      "image": "https://a0.muscache.com/im/pictures/dd1323cd-fd0a-4b3a-8951-6e3ffdd59b54.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/39362231?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "U 스트리트 코리도의 콘도(아파트) 전체",
+      "title": "Sunny studio condo in heart of DC",
+      "infoList": [
+        "인원 2명 · 원룸 · 침대 1개 · 욕실 1개",
+        "무선 인터넷 · 주방 · 세탁기"
+      ],
+      "price": ["110,675", "99,099"],
+      "image": "https://a0.muscache.com/im/pictures/cf9a8d2d-6d95-4a94-9bca-80e689a06a77.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/15343995?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "로건 써클(Logan Circle)의 아파트 전체",
+      "title": "Private Basement-apt in Logan Circle DC!",
+      "infoList": [
+        "인원 2명 · 침실 1개 · 침대 1개 · 욕실 1개",
+        "무선 인터넷 · 주방 · 세탁기"
+      ],
+      "price": ["86,887"],
+      "image": "https://a0.muscache.com/im/pictures/0d0f86bc-f676-4b38-8059-e6771667321d.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/16048230?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "셔(Shaw)의 개인실",
+      "title": "Private Bath & Room.Central Washington.Basement.B3",
+      "infoList": ["인원 2명 · 침실 1개 · 침대 2개 · 욕실 1개", "무선 인터넷"],
+      "price": ["51,819"],
+      "image": "https://a0.muscache.com/im/pictures/1b89a09f-b264-4d7e-9f02-3000f2d727a1.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/43336077?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "조지타운(Georgetown)의 아파트 전체",
+      "title": "Heart of Georgetown charming apartment!",
+      "infoList": [
+        "인원 2명 · 침실 1개 · 침대 2개 · 욕실 1개",
+        "무선 인터넷 · 주방 · 세탁기"
+      ],
+      "price": ["133,172", "123,366"],
+      "image": "https://a0.muscache.com/im/pictures/0ca0009a-3512-4fac-b5c6-0fb73717702c.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/19872890?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "듀퐁서클(Dupont Circle)의 아파트 전체",
+      "title": "Dupont Circle Studio w/ Full, Brand New Kitchen",
+      "infoList": [
+        "인원 2명 · 침실 1개 · 침대 1개 · 욕실 1개",
+        "무선 인터넷 · 주방 · 세탁기"
+      ],
+      "price": ["102,075"],
+      "image": "https://a0.muscache.com/im/pictures/88a8b105-3ad9-496a-9ae4-a75e0f351141.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/18734756?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "컬럼비아 하이츠(Columbia Heights)의 아파트 전체",
+      "title": "Prime U-street area apartment.",
+      "infoList": [
+        "인원 2명 · 침실 1개 · 침대 1개 · 욕실 1개",
+        "무선 인터넷 · 주방 · 세탁기"
+      ],
+      "price": ["125,997", "117,417"],
+      "image": "https://a0.muscache.com/im/pictures/cef525ef-1a8b-42e4-b03c-571618b54713.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/32870364?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "타코마(Takoma)의 아파트 전체",
+      "title": "Basement Apartment - Historic Takoma Park, DC",
+      "infoList": [
+        "인원 4명 · 침실 1개 · 침대 1개 · 욕실 1개",
+        "무료 주차 공간 · 무선 인터넷 · 주방 · 세탁기"
+      ],
+      "price": ["67,788"],
+      "image": "https://a0.muscache.com/im/pictures/1409dfaf-329d-44d9-b41e-e5639eca6a3a.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/23713101?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "컬럼비아 하이츠(Columbia Heights)의 개인실",
+      "title": "Columbia Heights Classy - near metro & restaurants",
+      "infoList": [
+        "인원 2명 · 침실 1개 · 침대 1개 · 공동 사용 욕실 1.5개",
+        "무선 인터넷 · 주방 · 세탁기"
+      ],
+      "price": ["76,601", "64,344"],
+      "image": "https://a0.muscache.com/im/pictures/3638817d-c3ae-41d0-a5aa-22c7bad7110b.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/40716667?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "주디시어리 광장(Judiciary Square)의 아파트 전체",
+      "title": "⭐️ Top Choice ⭐️ 1 bedroom w/ balcony ⭐️ White House",
+      "infoList": [
+        "인원 3명 · 침실 1개 · 침대 3개 · 욕실 1개",
+        "무선 인터넷 · 주방 · 세탁기"
+      ],
+      "price": ["194,111", "157,339"],
+      "image": "https://a0.muscache.com/im/pictures/295ded3e-6af0-40b8-b9b4-e27fee875d63.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/43126385?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "컬럼비아 하이츠 웨스트(Columbia Heights West)의 개인실",
+      "title": "Private room w/Private entrance, 15 mins from D.C.",
+      "infoList": [
+        "인원 2명 · 침실 1개 · 침대 1개 · 단독 사용 욕실 1개",
+        "무료 주차 공간 · 무선 인터넷"
+      ],
+      "price": ["54,805", "47,723"],
+      "image": "https://a0.muscache.com/im/pictures/87f2cf24-c46c-4b0b-8786-af0ec44825d7.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/42049665?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "컬럼비아 하이츠(Columbia Heights)의 개인실",
+      "title": "5 Minutes to Metro| 24/7 Dining | Midtown| Clean",
+      "infoList": [
+        "인원 2명 · 침실 1개 · 침대 1개 · 공동 사용 욕실 1개",
+        "무선 인터넷 · 주방 · 세탁기"
+      ],
+      "price": ["52,992", "49,315"],
+      "image": "https://a0.muscache.com/im/pictures/819e4528-e3f8-4c18-a31c-4b1657a28bed.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/39740640?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "듀퐁서클(Dupont Circle)의 개인실",
+      "title": "Convenient private room for one in Dupont",
+      "infoList": [
+        "인원 1명 · 침실 1개 · 침대 1개 · 단독 사용 욕실 1개",
+        "무선 인터넷"
+      ],
+      "price": ["101,762"],
+      "image": "https://a0.muscache.com/im/pictures/85a1de72-fc53-44e6-ac11-2600a1e177bf.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/23069548?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "셔(Shaw)의 개인실",
+      "title": "Luxury Suite - Easy Access to Downtown",
+      "infoList": [
+        "인원 2명 · 침실 1개 · 침대 1개 · 공동 사용 욕실 1개",
+        "무선 인터넷 · 주방 · 세탁기"
+      ],
+      "price": ["109,232", "101,605"],
+      "image": "https://a0.muscache.com/im/pictures/09976c48-d6b5-4550-b5fc-68bdd644fd5e.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/41776324?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "캐피톨 힐(Capitol Hill)의 타운하우스 전체",
+      "title": "Lincoln Park Place/ Capitol Hill/ Cozy 1 Bdrm Apt",
+      "infoList": [
+        "인원 4명 · 침실 1개 · 침대 2개 · 욕실 1개",
+        "무선 인터넷 · 주방 · 세탁기"
+      ],
+      "price": ["107,397"],
+      "image": "https://a0.muscache.com/im/pictures/pro_photo_tool/Hosting-41377434-unapproved/original/0b2ee9c0-6860-4aee-b79c-3cf190c67160.JPEG?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/41377434?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "사우스웨스트 워터프론트의 개인실",
+      "title": "Room at \"The Mall\" your place at the heart of DC.",
+      "infoList": [
+        "인원 1명 · 침실 1개 · 침대 1개 · 공동 사용 욕실 2개",
+        "무선 인터넷 · 주방 · 세탁기"
+      ],
+      "price": ["74,204", "66,850"],
+      "image": "https://a0.muscache.com/im/pictures/ba72d9d8-9670-4fe6-b2c2-a7297a468014.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/40677499?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "셔(Shaw)의 개인실",
+      "title": "Central Washington, Small room,Share bath,A21",
+      "infoList": ["인원 1명 · 침실 1개 · 침대 1개 · 욕실 1개", "무선 인터넷"],
+      "price": ["38,043"],
+      "image": "https://a0.muscache.com/im/pictures/79602493-df08-4e30-a9f7-2614c72af587.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/41061318?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    },
+    {
+      "description": "마운트 버논 스퀘어의 아파트 전체",
+      "title": "Lux 1BR Apt at ChinaTwn/Convention Ctr/ World Bank",
+      "infoList": [
+        "인원 5명 · 침실 1개 · 침대 1개 · 욕실 1개",
+        "무선 인터넷 · 주방 · 세탁기"
+      ],
+      "price": ["206,929", "180,507"],
+      "image": "https://a0.muscache.com/im/pictures/95e294f0-0648-4d2f-9e87-317005091741.jpg?aki_policy=large",
+      "link": "https://airbnb.co.kr/rooms/30368864?location=Washington&adults=1&check_in=2020-05-19&check_out=2020-05-28&previous_page_section_name=1000&federated_search_id=1ebc8397-d661-4583-af9c-819824630a27"
+    }
+  ]
+]

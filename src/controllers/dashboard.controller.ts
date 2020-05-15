@@ -1,10 +1,11 @@
 import { RequestHandler } from 'express';
 import rs from 'randomstring';
-import axios from 'axios';
+// import axios from 'axios';
 
 import Travel from '../models/Travel';
 
-import CURRENCY from '../lib/currency.json';
+import CURRENCY_CODE from '../lib/currencyCode.json';
+import CURRENCY from '../crawling/currency.json';
 import CATEGORY from '../lib/spendingCategory';
 
 const SEOUL_LATLNG = {
@@ -71,12 +72,13 @@ export const sendInitialData: RequestHandler = async (req, res) => {
   const travel = await Travel.findById(travelId);
   const travelCountry = travel!.country;
 
-  const currencyCode = Object.keys(CURRENCY).find(code => {
-    return CURRENCY[code].toLowerCase().includes(travelCountry.toLowerCase())
+  const currencyCode = Object.keys(CURRENCY_CODE).find(code => {
+    return CURRENCY_CODE[code].toLowerCase().includes(travelCountry.toLowerCase())
   }) || 'USD';
 
-  const response = await axios.get(process.env.CURRENCY_API_ENDPOINT);
-  const quotes = response.data.quotes;
+  // api request limit exceeded.(2020-05-08)
+  // const response = await axios.get(process.env.CURRENCY_API_ENDPOINT);
+  const quotes = CURRENCY;
 
   const USD_TO_CURRENCYCODE = quotes[`USD${currencyCode}`];
   const USD_TO_KOREAN_CURRENCY = quotes.USDKRW;

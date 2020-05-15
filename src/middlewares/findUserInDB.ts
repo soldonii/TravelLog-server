@@ -33,11 +33,11 @@ const findUserInDB: RequestHandler = async (req, res, next) => {
     } else {
       res.locals.user = user;
     }
+
+    next();
   } catch (err) {
     console.error('signing up user error', err);
   }
-
-  next();
 };
 
 export default findUserInDB;

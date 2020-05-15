@@ -10,6 +10,7 @@ declare global {
       AIRBNB_SEARCH_URI_FRONT: string;
       AIRBNB_SEARCH_URI_MID: string;
       AIRBNB_SEARCH_URI_BACK: string;
+      KAYAK_URI_FRONT: string;
     }
   }
 }
