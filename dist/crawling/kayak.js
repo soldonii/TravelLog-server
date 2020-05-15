@@ -39,7 +39,7 @@ const getKayakCrawlingData = (country, city, travelDates) => {
         const page = await browser.newPage();
         try {
             await page.goto(kayakUrl, { timeout: 50 * 1000 });
-            await page.waitForFunction('document.querySelector(".Common-Results-ProgressBar > .bar") && parseInt(document.querySelector(".Common-Results-ProgressBar > .bar").style.transform.slice(11, -2)) > 35', {
+            await page.waitForFunction('document.querySelector(".Common-Results-ProgressBar > .bar") && parseInt(document.querySelector(".Common-Results-ProgressBar > .bar").style.transform.slice(11, -2)) > 40', {
                 timeout: 50 * 1000
             });
         }
